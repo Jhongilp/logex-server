@@ -1,0 +1,68 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator pothos {
+  provider = "prisma-pothos-types"
+}
+
+model User {
+  nit      String     @unique
+  name     String
+  exports  Expo[]
+  customer Customer[]
+}
+
+model Expo {
+  id                  Int      @id @default(autoincrement())
+  consecutivo         String
+  destination_country String
+  puerto_destino      String
+  transport_mode      Int
+  selected_shipping   String
+  status              Int
+  globalProgress      Int
+  indicatator_month   Int
+  oc                  String
+  createdAt           DateTime @default(now())
+  customerId          Int
+  customer            Customer @relation(fields: [customerId], references: [id])
+  user                User     @relation(fields: [userId], references: [nit])
+  userId              String
+}
+
+model Customer {
+  id        Int        @id @default(autoincrement())
+  name      String
+  country   String
+  city      String
+  address   String
+  shippings Shipping[]
+  expos     Expo[]
+  userId    String
+  user      User       @relation(fields: [userId], references: [nit])
+}
+
+model Shipping {
+  id             Int      @id @default(autoincrement())
+  consignee      String
+  notify         String
+  country        String
+  city           String
+  transport_mode String
+  address        String
+  contact        String
+  email          String
+  phone          String
+  obs            String
+  customerId     Int
+  customer       Customer @relation(fields: [customerId], references: [id])
+}
