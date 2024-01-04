@@ -10,10 +10,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-generator pothos {
-  provider = "prisma-pothos-types"
-}
-
 model User {
   nit      String     @unique
   name     String
