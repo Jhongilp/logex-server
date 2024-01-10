@@ -2,12 +2,18 @@ import { prisma } from "../src/db";
 
 export const resolvers = {
   Query: {
-    hello: () => "Hello World!",
     users: async () => {
       return prisma.user.findMany();
     },
     customers: async () => {
       return prisma.customer.findMany();
+    },
+    customer: async (_root: any, { id }: any) => {
+      return prisma.customer.findUnique({
+        where: {
+          id: parseInt(id),
+        },
+      });
     },
   },
 
@@ -16,7 +22,6 @@ export const resolvers = {
       root: any,
       { input: { name, country, city, address, userId } }: any
     ): Promise<any> => {
-      console.log("input create customer: ", name, country, city, address, userId)
       return prisma.customer.create({
         data: {
           name,

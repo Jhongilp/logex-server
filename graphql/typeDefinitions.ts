@@ -2,9 +2,9 @@
 
 export const typeDefinitions = /* GraphQL */ `
   type Query {
-    hello: String!
     users: [User]
     customers: [Customer]
+    customer(id: ID!): Customer
   }
 
   type Mutation {
