@@ -32,6 +32,24 @@ export const resolvers = {
         },
       });
     },
+    updateCustomer: async (
+      root: any,
+      { input: { id, name, country, city, address, userId } }: any
+    ): Promise<any> => {
+      return prisma.customer.update({
+        where: {
+          id: parseInt(id),
+          userId,
+        },
+        data: {
+          name,
+          country,
+          city,
+          address,
+          userId,
+        },
+      });
+    },
   },
 
   User: {

@@ -9,6 +9,7 @@ export const typeDefinitions = /* GraphQL */ `
 
   type Mutation {
     createCustomer(input: CreateCustomerInput): Customer
+    updateCustomer(input: UpdateCustomerInput): Customer
   }
 
   type User {
@@ -27,6 +28,15 @@ export const typeDefinitions = /* GraphQL */ `
   }
 
   input CreateCustomerInput {
+    name: String!
+    country: String!
+    city: String!
+    address: String!
+    userId: String!
+  }
+  
+  input UpdateCustomerInput {
+    id: ID!
     name: String!
     country: String!
     city: String!
