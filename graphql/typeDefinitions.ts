@@ -10,6 +10,7 @@ export const typeDefinitions = /* GraphQL */ `
   type Mutation {
     createCustomer(input: CreateCustomerInput): Customer
     updateCustomer(input: UpdateCustomerInput): Customer
+    deleteCustomer(id: ID!): Customer
   }
 
   type User {

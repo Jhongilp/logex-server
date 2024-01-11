@@ -50,6 +50,14 @@ export const resolvers = {
         },
       });
     },
+    deleteCustomer: async (root: any, { id }: any): Promise<any> => {
+      return prisma.customer.delete({
+        where: {
+          id: parseInt(id),
+          // userId,
+        },
+      });
+    },
   },
 
   User: {
