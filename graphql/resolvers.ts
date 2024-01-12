@@ -8,6 +8,16 @@ export const resolvers = {
     customers: async () => {
       return prisma.customer.findMany();
     },
+    shippings: async (_root: any, { customerId }: any) => {
+      if (customerId) {
+        return prisma.shipping.findMany({
+          where: {
+            customerId: parseInt(customerId),
+          },
+        });
+      }
+      return prisma.shipping.findMany();
+    },
     customer: async (_root: any, { id }: any) => {
       return prisma.customer.findUnique({
         where: {
@@ -58,6 +68,41 @@ export const resolvers = {
         },
       });
     },
+    // +++ shippings
+    createShipping: async (
+      root: any,
+      {
+        input: {
+          consignee,
+          notify,
+          country,
+          city,
+          transport_mode,
+          address,
+          contact,
+          email,
+          phone,
+          obs,
+          customerId,
+        },
+      }: any
+    ): Promise<any> => {
+      return prisma.shipping.create({
+        data: {
+          consignee,
+          notify,
+          country,
+          city,
+          transport_mode,
+          address,
+          contact,
+          email,
+          phone,
+          obs,
+          customerId,
+        },
+      });
+    },
   },
 
   User: {
@@ -74,6 +119,12 @@ export const resolvers = {
       prisma.user.findUnique({
         where: {
           nit: customer.userId,
+        },
+      }),
+    shippings: (customer: any) =>
+      prisma.shipping.findMany({
+        where: {
+          customerId: customer.id,
         },
       }),
   },
