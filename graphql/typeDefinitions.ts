@@ -7,7 +7,6 @@ export const typeDefinitions = /* GraphQL */ `
     customer(id: ID!): Customer
     shippings(customerId: ID): [Shipping] # if not customerId provided return all shippings
     shipping(id: ID!): Shipping
-
   }
 
   type Mutation {
@@ -34,20 +33,19 @@ export const typeDefinitions = /* GraphQL */ `
   }
 
   type Shipping {
-    id:             ID!
-    consignee:      String
-    notify:         String
-    country:        String
-    city:           String
+    id: ID!
+    consignee: String
+    notify: String
+    country: String
+    city: String
     transport_mode: String
-    address:        String
-    contact:        String
-    email:          String
-    phone:          String
-    obs:            String
-    customerId:     Int
+    address: String
+    contact: String
+    email: String
+    phone: String
+    obs: String
+    customerId: Int
   }
-
 
   input CreateCustomerInput {
     name: String!
@@ -56,7 +54,7 @@ export const typeDefinitions = /* GraphQL */ `
     address: String!
     userId: String!
   }
-  
+
   input UpdateCustomerInput {
     id: ID!
     name: String!
@@ -67,16 +65,16 @@ export const typeDefinitions = /* GraphQL */ `
   }
 
   input CreateShippingInput {
-    consignee:      String
-    notify:         String
-    country:        String
-    city:           String
+    consignee: String
+    notify: String
+    country: String
+    city: String
     transport_mode: String
-    address:        String
-    contact:        String
-    email:          String
-    phone:          String
-    obs:            String
-    customerId:     Int
+    address: String
+    contact: String
+    email: String
+    phone: String
+    obs: String
+    customerId: Int
   }
 `;
