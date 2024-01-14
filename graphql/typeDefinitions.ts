@@ -6,6 +6,8 @@ export const typeDefinitions = /* GraphQL */ `
     customers: [Customer]
     customer(id: ID!): Customer
     shippings(customerId: ID): [Shipping] # if not customerId provided return all shippings
+    shipping(id: ID!): Shipping
+
   }
 
   type Mutation {
