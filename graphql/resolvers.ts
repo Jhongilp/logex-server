@@ -25,6 +25,13 @@ export const resolvers = {
         },
       });
     },
+    shipping: async (_root: any, { id }: any) => {
+      return prisma.shipping.findUnique({
+        where: {
+          id: parseInt(id),
+        },
+      });
+    },
   },
 
   Mutation: {
