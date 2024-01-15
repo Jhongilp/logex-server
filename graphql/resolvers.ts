@@ -110,6 +110,49 @@ export const resolvers = {
         },
       });
     },
+    updateShipping: async (
+      root: any,
+      {
+        input: {
+          id,
+          consignee,
+          notify,
+          country,
+          city,
+          transport_mode,
+          address,
+          contact,
+          email,
+          phone,
+          obs,
+        },
+      }: any
+    ): Promise<any> => {
+      return prisma.shipping.update({
+        where: {
+          id: parseInt(id),
+        },
+        data: {
+          consignee,
+          notify,
+          country,
+          city,
+          transport_mode,
+          address,
+          contact,
+          email,
+          phone,
+          obs,
+        },
+      });
+    },
+    deleteShipping: async (_root: any, { id }: any): Promise<any> => {
+      return prisma.shipping.delete({
+        where: {
+          id: parseInt(id),
+        },
+      });
+    },
   },
 
   User: {

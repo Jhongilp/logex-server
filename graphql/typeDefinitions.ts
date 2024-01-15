@@ -14,6 +14,8 @@ export const typeDefinitions = /* GraphQL */ `
     updateCustomer(input: UpdateCustomerInput): Customer
     deleteCustomer(id: ID!): Customer
     createShipping(input: CreateShippingInput): Shipping
+    updateShipping(input: UpdateShippingInput): Shipping
+    deleteShipping(id: ID!): Shipping
   }
 
   type User {
@@ -76,5 +78,18 @@ export const typeDefinitions = /* GraphQL */ `
     phone: String
     obs: String
     customerId: Int
+  }
+  input UpdateShippingInput {
+    id: ID!
+    consignee: String
+    notify: String
+    country: String
+    city: String
+    transport_mode: String
+    address: String
+    contact: String
+    email: String
+    phone: String
+    obs: String
   }
 `;
