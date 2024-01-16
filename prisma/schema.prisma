@@ -13,26 +13,8 @@ datasource db {
 model User {
   nit      String     @unique
   name     String
-  exports  Expo[]
+  // exports  Expo[]
   customer Customer[]
-}
-
-model Expo {
-  id                  Int      @id @default(autoincrement())
-  consecutivo         String
-  destination_country String
-  puerto_destino      String
-  transport_mode      Int
-  selected_shipping   String
-  status              Int
-  globalProgress      Int
-  indicatator_month   Int
-  oc                  String
-  createdAt           DateTime @default(now())
-  customerId          Int
-  customer            Customer @relation(fields: [customerId], references: [id])
-  user                User     @relation(fields: [userId], references: [nit])
-  userId              String
 }
 
 model Customer {
@@ -61,4 +43,21 @@ model Shipping {
   obs            String
   customerId     Int
   customer       Customer @relation(fields: [customerId], references: [id])
+  expos          Expo[]
+}
+
+model Expo {
+  id                Int      @id @default(autoincrement())
+  consecutivo       String
+  status            Int
+  globalProgress    Int
+  indicatator_month Int
+  oc                String
+  createdAt         DateTime @default(now())
+  shippingId        Int
+  shipping          Shipping @relation(fields: [shippingId], references: [id])
+  customerId        Int
+  customer          Customer @relation(fields: [customerId], references: [id])
+  // user              User     @relation(fields: [userId], references: [nit])
+  // userId            String
 }

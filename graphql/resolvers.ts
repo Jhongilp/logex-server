@@ -1,6 +1,8 @@
+import { DateTimeResolver } from "graphql-scalars";
 import { prisma } from "../src/db";
 
 export const resolvers = {
+  DateTime: DateTimeResolver,
   Query: {
     users: async () => {
       return prisma.user.findMany();
@@ -31,6 +33,9 @@ export const resolvers = {
           id: parseInt(id),
         },
       });
+    },
+    expos: async () => {
+      return prisma.expo.findMany();
     },
   },
 
@@ -153,6 +158,36 @@ export const resolvers = {
         },
       });
     },
+    createExpo: async (
+      root: any,
+      {
+        input: {
+          id,
+          consecutivo,
+          status,
+          globalProgress,
+          indicatator_month,
+          oc,
+          createdAt,
+          shippingId,
+          customerId,
+        },
+      }: any
+    ): Promise<any> => {
+      return prisma.expo.create({
+        data: {
+          id,
+          consecutivo,
+          status,
+          globalProgress,
+          indicatator_month,
+          oc,
+          createdAt,
+          shippingId,
+          customerId,
+        },
+      });
+    },
   },
 
   User: {
@@ -175,6 +210,20 @@ export const resolvers = {
       prisma.shipping.findMany({
         where: {
           customerId: customer.id,
+        },
+      }),
+  },
+  Expo: {
+    customer: (expo: any) =>
+      prisma.customer.findUnique({
+        where: {
+          id: expo.customerId,
+        },
+      }),
+    shipping: (expo: any) =>
+      prisma.shipping.findUnique({
+        where: {
+          id: expo.shippingId,
         },
       }),
   },
