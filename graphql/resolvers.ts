@@ -34,8 +34,14 @@ export const resolvers = {
         },
       });
     },
-    expos: async () => {
-      return prisma.expo.findMany();
+    expos: async (_root: any, { userId }: any) => {
+      return prisma.expo.findMany({
+        where: {
+          customer: {
+            userId
+          }
+        }
+      });
     },
   },
 
