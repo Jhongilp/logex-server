@@ -1,16 +1,16 @@
-import { DateTimeTypeDefinition } from 'graphql-scalars'
+import { DateTimeTypeDefinition } from "graphql-scalars";
 // https://the-guild.dev/graphql/yoga-server/tutorial/basic/03-graphql-server
 
 export const typeDefinitions = /* GraphQL */ `
   ${DateTimeTypeDefinition}
   type Query {
-      time: DateTime
+    time: DateTime
     users: [User]
     customers: [Customer]
     customer(id: ID!): Customer
     shippings(customerId: ID): [Shipping] # if not customerId provided return all shippings
     shipping(id: ID!): Shipping
-    expos: [Expo]
+    expos(userId: ID!): [Expo]
   }
 
   type Mutation {
