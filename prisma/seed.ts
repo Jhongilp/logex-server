@@ -7,10 +7,21 @@ async function main() {
   await prisma.expo.deleteMany({});
   await prisma.shipping.deleteMany({});
 
-  await prisma.user.create({
+  await prisma.company.create({
     data: {
+      nit: "8306953658",
       name: "PACIFIC FRUITS SAS",
-      nit: "8009653658",
+      country: "COLOMBIA",
+      city: "CALI",
+      users: {
+        create: [
+          {
+            id: "28dc3632-4ae9-4048-9ea1-83d5c7f62f6c",
+            name: "MARIBEL FLORES",
+            email: "maribel",
+          },
+        ],
+      },
       customer: {
         create: [
           {
@@ -29,22 +40,6 @@ async function main() {
       },
     },
   });
-
-  // prisma.expo.create({
-  //   data: {
-  //     consecutivo: "EXP-101",
-  //     destination_country: "ESPAÑA",
-  //     globalProgress: 0,
-  //     indicatator_month: 1,
-  //     oc: "",
-  //     puerto_destino: "BILBAO",
-  //     status: 1,
-  //     transport_mode: 1,
-  //     selected_shipping: "",
-  //     userId: "8009653658",
-  //     customerId: 1,
-  //   },
-  // });
 }
 
 main().then(() => {
