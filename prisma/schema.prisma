@@ -1,6 +1,8 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
+// npx prisma db push --force-reset -> reset database
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -10,23 +12,33 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  nit      String     @unique
+model Company {
+  nit      String     @id
   name     String
-  // exports  Expo[]
+  country  String
+  city     String
+  users    User[]
   customer Customer[]
 }
 
+model User {
+  id          String   @unique @db.Uuid
+  name        String
+  email       String   @unique
+  company     Company? @relation(fields: [company_nit], references: [nit])
+  company_nit String?
+}
+
 model Customer {
-  id        Int        @id @default(autoincrement())
-  name      String
-  country   String
-  city      String
-  address   String
-  shippings Shipping[]
-  expos     Expo[]
-  userId    String
-  user      User       @relation(fields: [userId], references: [nit])
+  id          String     @id @default(uuid())
+  name        String
+  country     String
+  city        String
+  address     String
+  shippings   Shipping[]
+  expos       Expo[]
+  company     Company?   @relation(fields: [company_nit], references: [nit])
+  company_nit String?
 }
 
 model Shipping {
@@ -41,7 +53,7 @@ model Shipping {
   email          String
   phone          String
   obs            String
-  customerId     Int
+  customerId     String
   customer       Customer @relation(fields: [customerId], references: [id])
   expos          Expo[]
 }
@@ -56,8 +68,6 @@ model Expo {
   createdAt         DateTime @default(now())
   shippingId        Int
   shipping          Shipping @relation(fields: [shippingId], references: [id])
-  customerId        Int
+  customerId        String
   customer          Customer @relation(fields: [customerId], references: [id])
-  // user              User     @relation(fields: [userId], references: [nit])
-  // userId            String
 }
