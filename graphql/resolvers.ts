@@ -4,6 +4,9 @@ import { prisma } from "../src/db";
 export const resolvers = {
   DateTime: DateTimeResolver,
   Query: {
+    companies: async () => {
+      return prisma.company.findMany();
+    },
     users: async () => {
       return prisma.user.findMany();
     },
@@ -14,7 +17,7 @@ export const resolvers = {
       if (customerId) {
         return prisma.shipping.findMany({
           where: {
-            customerId: parseInt(customerId),
+            customerId,
           },
         });
       }
@@ -23,7 +26,7 @@ export const resolvers = {
     customer: async (_root: any, { id }: any) => {
       return prisma.customer.findUnique({
         where: {
-          id: parseInt(id),
+          id,
         },
       });
     },
@@ -34,13 +37,13 @@ export const resolvers = {
         },
       });
     },
-    expos: async (_root: any, { userId }: any) => {
+    expos: async (_root: any, { companyId }: any) => {
       return prisma.expo.findMany({
         where: {
           customer: {
-            userId
-          }
-        }
+            company_nit: companyId,
+          },
+        },
       });
     },
   },
@@ -48,7 +51,7 @@ export const resolvers = {
   Mutation: {
     createCustomer: async (
       root: any,
-      { input: { name, country, city, address, userId } }: any
+      { input: { name, country, city, address, companyId } }: any
     ): Promise<any> => {
       return prisma.customer.create({
         data: {
@@ -56,33 +59,32 @@ export const resolvers = {
           country,
           city,
           address,
-          userId,
+          company_nit: companyId,
         },
       });
     },
     updateCustomer: async (
       root: any,
-      { input: { id, name, country, city, address, userId } }: any
+      { input: { id, name, country, city, address, companyId } }: any
     ): Promise<any> => {
       return prisma.customer.update({
         where: {
-          id: parseInt(id),
-          userId,
+          id,
+          company_nit: companyId,
         },
         data: {
           name,
           country,
           city,
           address,
-          userId,
+          company_nit: companyId,
         },
       });
     },
     deleteCustomer: async (root: any, { id }: any): Promise<any> => {
       return prisma.customer.delete({
         where: {
-          id: parseInt(id),
-          // userId,
+          id,
         },
       });
     },
@@ -196,20 +198,35 @@ export const resolvers = {
     },
   },
 
-  User: {
-    customers: (user: any) =>
+  Company: {
+    users: (company: any) =>
+      prisma.user.findMany({
+        where: {
+          company_nit: company.nit,
+        },
+      }),
+    customers: (company: any) =>
       prisma.customer.findMany({
         where: {
-          userId: user.nit,
+          company_nit: company.nit,
+        },
+      }),
+  },
+
+  User: {
+    company: (user: any) =>
+      prisma.company.findMany({
+        where: {
+          nit: user.company_nit,
         },
       }),
   },
 
   Customer: {
-    user: (customer: any) =>
-      prisma.user.findUnique({
+    company: (customer: any) =>
+      prisma.company.findUnique({
         where: {
-          nit: customer.userId,
+          nit: customer.company_nit,
         },
       }),
     shippings: (customer: any) =>

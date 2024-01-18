@@ -5,15 +5,17 @@ export const typeDefinitions = /* GraphQL */ `
   ${DateTimeTypeDefinition}
   type Query {
     time: DateTime
+    companies: [Company]
     users: [User]
     customers: [Customer]
     customer(id: ID!): Customer
     shippings(customerId: ID): [Shipping] # if not customerId provided return all shippings
     shipping(id: ID!): Shipping
-    expos(userId: ID!): [Expo]
+    expos(companyId: ID!): [Expo]
   }
 
   type Mutation {
+    createUser(input: CreateUserInput): User
     createCustomer(input: CreateCustomerInput): Customer
     updateCustomer(input: UpdateCustomerInput): Customer
     deleteCustomer(id: ID!): Customer
@@ -23,10 +25,20 @@ export const typeDefinitions = /* GraphQL */ `
     createExpo(input: CreateExpoInput): Expo
   }
 
+  type Company {
+    nit: String
+    name: String
+    country: String
+    city: String
+    users: [User!]!
+    customers: [Customer]
+  }
+
   type User {
-    nit: String!
+    id: ID!
     name: String!
-    customers: [Customer!]
+    email: String
+    company: Company!
   }
 
   type Customer {
@@ -35,7 +47,8 @@ export const typeDefinitions = /* GraphQL */ `
     country: String!
     city: String!
     address: String!
-    user: User!
+    # user: User!
+    company: Company!
     shippings: [Shipping!]
   }
 
@@ -66,12 +79,18 @@ export const typeDefinitions = /* GraphQL */ `
     customer: Customer
   }
 
+  input CreateUserInput {
+    id: ID!
+    nit: String!
+    name: String!
+  }
+
   input CreateCustomerInput {
     name: String!
     country: String!
     city: String!
     address: String!
-    userId: String!
+    companyId: String!
   }
 
   input UpdateCustomerInput {
@@ -80,7 +99,7 @@ export const typeDefinitions = /* GraphQL */ `
     country: String!
     city: String!
     address: String!
-    userId: String!
+    companyId: String!
   }
 
   input CreateShippingInput {
