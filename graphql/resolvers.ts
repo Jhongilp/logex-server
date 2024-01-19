@@ -1,44 +1,53 @@
 import { DateTimeResolver } from "graphql-scalars";
-import { prisma } from "../src/db";
+// import { prisma } from "../src/db";
+import { GraphQLContext } from "../src/index";
 
 export const resolvers = {
   DateTime: DateTimeResolver,
   Query: {
-    companies: async () => {
-      return prisma.company.findMany();
+    companies: async (parent: any, args: any, context: GraphQLContext) => {
+      return context.prisma.company.findMany();
     },
-    users: async () => {
-      return prisma.user.findMany();
+    users: async (parent: any, args: any, context: GraphQLContext) => {
+      return context.prisma.user.findMany();
     },
-    customers: async () => {
-      return prisma.customer.findMany();
+    customers: async (parent: any, args: any, context: GraphQLContext) => {
+      return context.prisma.customer.findMany({
+        where: {
+          company_nit: "89562321",
+        },
+      });
     },
-    shippings: async (_root: any, { customerId }: any) => {
+    shippings: async (
+      parent: any,
+      { customerId }: any,
+      context: GraphQLContext
+    ) => {
       if (customerId) {
-        return prisma.shipping.findMany({
+        return context.prisma.shipping.findMany({
           where: {
             customerId,
           },
         });
       }
-      return prisma.shipping.findMany();
+      return context.prisma.shipping.findMany();
     },
-    customer: async (_root: any, { id }: any) => {
-      return prisma.customer.findUnique({
+    customer: async (_root: any, { id }: any, context: GraphQLContext) => {
+      return context.prisma.customer.findUnique({
         where: {
           id,
         },
       });
     },
-    shipping: async (_root: any, { id }: any) => {
-      return prisma.shipping.findUnique({
+    shipping: async (_root: any, { id }: any, context: GraphQLContext) => {
+      return context.prisma.shipping.findUnique({
         where: {
           id: parseInt(id),
         },
       });
     },
-    expos: async (_root: any, { companyId }: any) => {
-      return prisma.expo.findMany({
+    expos: async (_root: any, { companyId }: any, context: GraphQLContext) => {
+      return context.prisma.expo.findMany({
         where: {
           customer: {
             company_nit: companyId,
@@ -51,9 +60,10 @@ export const resolvers = {
   Mutation: {
     createCustomer: async (
       root: any,
-      { input: { name, country, city, address, companyId } }: any
+      { input: { name, country, city, address, companyId } }: any,
+      context: GraphQLContext
     ): Promise<any> => {
-      return prisma.customer.create({
+      return context.prisma.customer.create({
         data: {
           name,
           country,
@@ -65,9 +75,10 @@ export const resolvers = {
     },
     updateCustomer: async (
       root: any,
-      { input: { id, name, country, city, address, companyId } }: any
+      { input: { id, name, country, city, address, companyId } }: any,
+      context: GraphQLContext
     ): Promise<any> => {
-      return prisma.customer.update({
+      return context.prisma.customer.update({
         where: {
           id,
           company_nit: companyId,
@@ -81,8 +92,12 @@ export const resolvers = {
         },
       });
     },
-    deleteCustomer: async (root: any, { id }: any): Promise<any> => {
-      return prisma.customer.delete({
+    deleteCustomer: async (
+      root: any,
+      { id }: any,
+      context: GraphQLContext
+    ): Promise<any> => {
+      return context.prisma.customer.delete({
         where: {
           id,
         },
@@ -105,9 +120,10 @@ export const resolvers = {
           obs,
           customerId,
         },
-      }: any
+      }: any,
+      context: GraphQLContext
     ): Promise<any> => {
-      return prisma.shipping.create({
+      return context.prisma.shipping.create({
         data: {
           consignee,
           notify,
@@ -139,9 +155,10 @@ export const resolvers = {
           phone,
           obs,
         },
-      }: any
+      }: any,
+      context: GraphQLContext
     ): Promise<any> => {
-      return prisma.shipping.update({
+      return context.prisma.shipping.update({
         where: {
           id: parseInt(id),
         },
@@ -159,8 +176,12 @@ export const resolvers = {
         },
       });
     },
-    deleteShipping: async (_root: any, { id }: any): Promise<any> => {
-      return prisma.shipping.delete({
+    deleteShipping: async (
+      _root: any,
+      { id }: any,
+      context: GraphQLContext
+    ): Promise<any> => {
+      return context.prisma.shipping.delete({
         where: {
           id: parseInt(id),
         },
@@ -180,9 +201,10 @@ export const resolvers = {
           shippingId,
           customerId,
         },
-      }: any
+      }: any,
+      context: GraphQLContext
     ): Promise<any> => {
-      return prisma.expo.create({
+      return context.prisma.expo.create({
         data: {
           id,
           consecutivo,
@@ -199,14 +221,14 @@ export const resolvers = {
   },
 
   Company: {
-    users: (company: any) =>
-      prisma.user.findMany({
+    users: (company: any, args: any, context: GraphQLContext) =>
+      context.prisma.user.findMany({
         where: {
           company_nit: company.nit,
         },
       }),
-    customers: (company: any) =>
-      prisma.customer.findMany({
+    customers: (company: any, args: any, context: GraphQLContext) =>
+      context.prisma.customer.findMany({
         where: {
           company_nit: company.nit,
         },
@@ -214,8 +236,8 @@ export const resolvers = {
   },
 
   User: {
-    company: (user: any) =>
-      prisma.company.findMany({
+    company: (user: any, args: any, context: GraphQLContext) =>
+      context.prisma.company.findMany({
         where: {
           nit: user.company_nit,
         },
@@ -223,28 +245,28 @@ export const resolvers = {
   },
 
   Customer: {
-    company: (customer: any) =>
-      prisma.company.findUnique({
+    company: (customer: any, args: any, context: GraphQLContext) =>
+      context.prisma.company.findUnique({
         where: {
           nit: customer.company_nit,
         },
       }),
-    shippings: (customer: any) =>
-      prisma.shipping.findMany({
+    shippings: (customer: any, args: any, context: GraphQLContext) =>
+      context.prisma.shipping.findMany({
         where: {
           customerId: customer.id,
         },
       }),
   },
   Expo: {
-    customer: (expo: any) =>
-      prisma.customer.findUnique({
+    customer: (expo: any, args: any, context: GraphQLContext) =>
+      context.prisma.customer.findUnique({
         where: {
           id: expo.customerId,
         },
       }),
-    shipping: (expo: any) =>
-      prisma.shipping.findUnique({
+    shipping: (expo: any, args: any, context: GraphQLContext) =>
+      context.prisma.shipping.findUnique({
         where: {
           id: expo.shippingId,
         },
