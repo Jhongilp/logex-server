@@ -22,11 +22,15 @@ model Company {
 }
 
 model User {
-  id          String   @unique @db.Uuid
-  name        String
-  email       String   @unique
-  company     Company? @relation(fields: [company_nit], references: [nit])
-  company_nit String?
+  id              String   @unique @db.Uuid
+  email           String   @unique
+  first_name      String
+  second_name     String?
+  first_lastname  String
+  second_lastname String?
+  role            Int?
+  company         Company? @relation(fields: [company_id], references: [nit])
+  company_id      String
 }
 
 model Customer {

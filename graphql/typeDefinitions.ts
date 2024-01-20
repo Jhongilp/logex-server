@@ -36,7 +36,11 @@ export const typeDefinitions = /* GraphQL */ `
 
   type User {
     id: ID!
-    name: String!
+    first_name: String
+    second_name: String
+    first_lastname: String
+    second_lastname: String
+    role: Int
     email: String
     company: Company!
   }
@@ -81,8 +85,13 @@ export const typeDefinitions = /* GraphQL */ `
 
   input CreateUserInput {
     id: ID!
-    nit: String!
-    name: String!
+    email: String!
+    first_name: String!
+    second_name: String
+    first_lastname: String!
+    second_lastname: String
+    role: Int
+    company_id: String!
   }
 
   input CreateCustomerInput {

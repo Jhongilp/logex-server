@@ -11,9 +11,13 @@ CREATE TABLE "Company" (
 -- CreateTable
 CREATE TABLE "User" (
     "id" UUID NOT NULL,
-    "name" TEXT NOT NULL,
     "email" TEXT NOT NULL,
-    "company_nit" TEXT
+    "first_name" TEXT NOT NULL,
+    "second_name" TEXT,
+    "first_lastname" TEXT NOT NULL,
+    "second_lastname" TEXT,
+    "role" INTEGER,
+    "company_id" TEXT NOT NULL
 );
 
 -- CreateTable
@@ -68,7 +72,7 @@ CREATE UNIQUE INDEX "User_id_key" ON "User"("id");
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
 -- AddForeignKey
-ALTER TABLE "User" ADD CONSTRAINT "User_company_nit_fkey" FOREIGN KEY ("company_nit") REFERENCES "Company"("nit") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "User" ADD CONSTRAINT "User_company_id_fkey" FOREIGN KEY ("company_id") REFERENCES "Company"("nit") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Customer" ADD CONSTRAINT "Customer_company_nit_fkey" FOREIGN KEY ("company_nit") REFERENCES "Company"("nit") ON DELETE SET NULL ON UPDATE CASCADE;

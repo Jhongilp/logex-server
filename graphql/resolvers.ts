@@ -12,6 +12,7 @@ export const resolvers = {
       return context.prisma.user.findMany();
     },
     customers: async (parent: any, args: any, context: GraphQLContext) => {
+      console.log("[customer resolver] current user: ", context.currentUser);
       return context.prisma.customer.findMany({
         where: {
           company_nit: "89562321",
@@ -58,6 +59,38 @@ export const resolvers = {
   },
 
   Mutation: {
+    createUser: async (
+      root: any,
+      {
+        input: {
+          id,
+          email,
+          first_name,
+          second_name,
+          first_lastname,
+          second_lastname,
+          role,
+          company_id,
+        },
+      }: any,
+      context: GraphQLContext
+    ): Promise<any> => {
+
+      // TODO crear empresa y usuario al mismo tiempo así como en el seed.
+      // Ya después se debe verificar si la empresa ya existe. O no, supongo que usuario adicionales se deben agregar desde la aplicación y no desde Signup
+      return context.prisma.user.create({
+        data: {
+          id,
+          email,
+          first_name,
+          second_name,
+          first_lastname,
+          second_lastname,
+          role,
+          company_id,
+        },
+      });
+    },
     createCustomer: async (
       root: any,
       { input: { name, country, city, address, companyId } }: any,
@@ -224,7 +257,7 @@ export const resolvers = {
     users: (company: any, args: any, context: GraphQLContext) =>
       context.prisma.user.findMany({
         where: {
-          company_nit: company.nit,
+          company_id: company.nit,
         },
       }),
     customers: (company: any, args: any, context: GraphQLContext) =>
