@@ -17,8 +17,9 @@ async function main() {
         create: [
           {
             id: "28dc3632-4ae9-4048-9ea1-83d5c7f62f6c",
-            name: "MARIBEL FLORES",
-            email: "maribel",
+            email: "testing@pafici.com",
+            first_name: "Linda",
+            first_lastname: "Hernandez",
           },
         ],
       },
