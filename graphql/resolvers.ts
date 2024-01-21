@@ -70,26 +70,34 @@ export const resolvers = {
           first_lastname,
           second_lastname,
           role,
-          company_id,
+          company,
         },
       }: any,
       context: GraphQLContext
     ): Promise<any> => {
-
-      // TODO crear empresa y usuario al mismo tiempo así como en el seed.
-      // Ya después se debe verificar si la empresa ya existe. O no, supongo que usuario adicionales se deben agregar desde la aplicación y no desde Signup
-      return context.prisma.user.create({
+      await context.prisma.company.create({
         data: {
-          id,
-          email,
-          first_name,
-          second_name,
-          first_lastname,
-          second_lastname,
-          role,
-          company_id,
+          ...company,
+          users: {
+            create: [
+              {
+                id,
+                email,
+                first_name,
+                second_name,
+                first_lastname,
+                second_lastname,
+                role,
+              },
+            ],
+          },
         },
       });
+      return context.prisma.user.findUnique({
+        where: {
+          id
+        }
+      })
     },
     createCustomer: async (
       root: any,
