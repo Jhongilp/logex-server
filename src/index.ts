@@ -23,9 +23,6 @@ function main() {
   const yoga = createYoga({
     schema,
     context: async ({ request }): Promise<GraphQLContext> => {
-      // get custom header value
-      // const foo = request.headers.get("x-foo") ?? null;
-      // console.log("[context] request: ", request);
       return {
         prisma,
         currentUser: await authenticateUser(prisma, request),
