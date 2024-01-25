@@ -106,7 +106,7 @@ export const typeDefinitions = /* GraphQL */ `
     country: String!
     city: String!
     address: String!
-    companyId: String!
+    # companyId: String! # we don't need this since Auth user will provide the companyId
   }
 
   input UpdateCustomerInput {

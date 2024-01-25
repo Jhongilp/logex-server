@@ -15,7 +15,7 @@ export const resolvers = {
       console.log("[customer resolver] current user: ", context.currentUser);
       return context.prisma.customer.findMany({
         where: {
-          company_nit: "89562321",
+          company_nit: context.currentUser?.company_id,
         },
       });
     },
@@ -95,15 +95,17 @@ export const resolvers = {
       });
       return context.prisma.user.findUnique({
         where: {
-          id
-        }
-      })
+          id,
+        },
+      });
     },
     createCustomer: async (
       root: any,
-      { input: { name, country, city, address, companyId } }: any,
+      { input: { name, country, city, address } }: any,
       context: GraphQLContext
     ): Promise<any> => {
+      const companyId = context.currentUser?.company_id;
+      if (!companyId) return;
       return context.prisma.customer.create({
         data: {
           name,
