@@ -12,7 +12,7 @@ export const resolvers = {
       return context.prisma.user.findMany();
     },
     customers: async (parent: any, args: any, context: GraphQLContext) => {
-      console.log("[customer resolver] current user: ", context.currentUser);
+      // console.log("[customer resolver] current user: ", context.currentUser);
       return context.prisma.customer.findMany({
         where: {
           company_nit: context.currentUser?.company_id,

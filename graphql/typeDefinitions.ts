@@ -68,7 +68,7 @@ export const typeDefinitions = /* GraphQL */ `
     email: String
     phone: String
     obs: String
-    customerId: Int
+    customerId: String
   }
 
   type Expo {
@@ -129,7 +129,7 @@ export const typeDefinitions = /* GraphQL */ `
     email: String
     phone: String
     obs: String
-    customerId: Int
+    customerId: String
   }
   input UpdateShippingInput {
     id: ID!

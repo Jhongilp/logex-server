@@ -9,7 +9,7 @@ export async function authenticateUser(
   if (header !== null) {
     const token = header.split(" ")[1];
     const tokenPayload = jwtDecode(token);
-    console.log("[auth user] token payload: ", tokenPayload);
+    // console.log("[auth user] token payload: ", tokenPayload);
     const userId = tokenPayload?.sub;
     return await prisma.user.findUnique({ where: { id: userId } });
   }
