@@ -36,20 +36,3 @@ function main() {
 }
 
 main();
-
-// add authenticated user using this guide
-// https://the-guild.dev/graphql/yoga-server/tutorial/advanced/01-authentication
-
-// from client to pass the token
-// https://formidable.com/open-source/urql/docs/advanced/authentication/
-
-/**
- * authenticated users
- *
- * - create signup resolver
- *    -- the args must have the user company info AND the user id from Supabase auth table
- *    -- save user info in postgress User table
- *
- * - validate that the request are coming from valid users
- *    -- compare the auth user id request with the User table
- */
