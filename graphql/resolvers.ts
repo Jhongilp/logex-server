@@ -12,7 +12,7 @@ export const resolvers = {
       return context.prisma.user.findMany();
     },
     customers: async (parent: any, args: any, context: GraphQLContext) => {
-      // console.log("[customer resolver] current user: ", context.currentUser);
+      console.log("[customer resolver] current user: ", context.currentUser);
       return context.prisma.customer.findMany({
         where: {
           company_nit: context.currentUser?.company_id,
@@ -105,8 +105,9 @@ export const resolvers = {
       context: GraphQLContext
     ): Promise<any> => {
       const companyId = context.currentUser?.company_id;
+
       if (!companyId) return;
-      return context.prisma.customer.create({
+      const newCustomer = await context.prisma.customer.create({
         data: {
           name,
           country,
@@ -115,6 +116,13 @@ export const resolvers = {
           company_nit: companyId,
         },
       });
+      const allCustomers = await context.prisma.customer.findMany({
+        where: {
+          company_nit: context.currentUser?.company_id,
+        },
+      });
+      context.pubSub.publish("onCustomerUpdates", { customers: allCustomers });
+      return newCustomer;
     },
     updateCustomer: async (
       root: any,
@@ -260,6 +268,13 @@ export const resolvers = {
           customerId,
         },
       });
+    },
+  },
+
+  Subscription: {
+    customers: {
+      subscribe: (parent: unknown, args: {}, context: GraphQLContext) =>
+        context.pubSub.subscribe("onCustomerUpdates"),
     },
   },
 

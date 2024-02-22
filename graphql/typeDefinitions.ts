@@ -25,6 +25,10 @@ export const typeDefinitions = /* GraphQL */ `
     createExpo(input: CreateExpoInput): Expo
   }
 
+  type Subscription {
+    customers: [Customer]
+  }
+
   type Company {
     nit: String
     name: String
