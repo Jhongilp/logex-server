@@ -1,5 +1,5 @@
 import { DateTimeResolver } from "graphql-scalars";
-// import { prisma } from "../src/db";
+import { GraphQLError } from "graphql";
 import { GraphQLContext } from "../src/index";
 
 export const resolvers = {
@@ -13,11 +13,17 @@ export const resolvers = {
     },
     customers: async (parent: any, args: any, context: GraphQLContext) => {
       console.log("[customer resolver] current user: ", context.currentUser);
-      return context.prisma.customer.findMany({
+      if (!context?.currentUser) {
+        return new GraphQLError("Unauthorized user");
+      }
+      const allCustomers = await context.prisma.customer.findMany({
         where: {
           company_nit: context.currentUser?.company_id,
         },
       });
+      
+      context.pubSub.publish("onCustomerUpdates", { customers: allCustomers });
+      return allCustomers;
     },
     shippings: async (
       parent: any,
