@@ -119,7 +119,6 @@ export const typeDefinitions = /* GraphQL */ `
     country: String!
     city: String!
     address: String!
-    companyId: String!
   }
 
   input CreateShippingInput {

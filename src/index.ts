@@ -17,7 +17,6 @@ function main() {
   const yoga = createYoga({
     schema,
     context: async ({ request }): Promise<GraphQLContext> => {
-      console.log("[contetx] request: ", request.headers.get("authorization"));
       return {
         prisma,
         currentUser: await authenticateUser(prisma, request),

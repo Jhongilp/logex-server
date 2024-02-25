@@ -12,7 +12,7 @@ export const resolvers = {
       return context.prisma.user.findMany();
     },
     customers: async (parent: any, args: any, context: GraphQLContext) => {
-      console.log("[customer resolver] current user: ", context.currentUser);
+      // console.log("[customer resolver] current user: ", context.currentUser);
       if (!context?.currentUser) {
         return new GraphQLError("Unauthorized user");
       }
@@ -21,7 +21,7 @@ export const resolvers = {
           company_nit: context.currentUser?.company_id,
         },
       });
-      
+
       context.pubSub.publish("onCustomerUpdates", { customers: allCustomers });
       return allCustomers;
     },
@@ -30,6 +30,9 @@ export const resolvers = {
       { customerId }: any,
       context: GraphQLContext
     ) => {
+      if (!context?.currentUser) {
+        return new GraphQLError("Unauthorized user");
+      }
       if (customerId) {
         return context.prisma.shipping.findMany({
           where: {
@@ -40,16 +43,24 @@ export const resolvers = {
       return context.prisma.shipping.findMany();
     },
     customer: async (_root: any, { id }: any, context: GraphQLContext) => {
+      if (!context?.currentUser) {
+        return new GraphQLError("Unauthorized user");
+      }
+
       return context.prisma.customer.findUnique({
         where: {
           id,
+          company_nit: context.currentUser?.company_id
         },
       });
     },
     shipping: async (_root: any, { id }: any, context: GraphQLContext) => {
+      if (!context?.currentUser) {
+        return new GraphQLError("Unauthorized user");
+      }
       return context.prisma.shipping.findUnique({
         where: {
-          id: parseInt(id),
+          id,
         },
       });
     },
@@ -132,20 +143,22 @@ export const resolvers = {
     },
     updateCustomer: async (
       root: any,
-      { input: { id, name, country, city, address, companyId } }: any,
+      { input: { id, name, country, city, address } }: any,
       context: GraphQLContext
     ): Promise<any> => {
+      if (!context?.currentUser) {
+        return new GraphQLError("Unauthorized user");
+      }
+
       return context.prisma.customer.update({
         where: {
           id,
-          company_nit: companyId,
         },
         data: {
           name,
           country,
           city,
           address,
-          company_nit: companyId,
         },
       });
     },
@@ -215,9 +228,12 @@ export const resolvers = {
       }: any,
       context: GraphQLContext
     ): Promise<any> => {
+      if (!context?.currentUser) {
+        return new GraphQLError("Unauthorized user");
+      }
       return context.prisma.shipping.update({
         where: {
-          id: parseInt(id),
+          id,
         },
         data: {
           consignee,
@@ -238,9 +254,12 @@ export const resolvers = {
       { id }: any,
       context: GraphQLContext
     ): Promise<any> => {
+      if (!context?.currentUser) {
+        return new GraphQLError("Unauthorized user");
+      }
       return context.prisma.shipping.delete({
         where: {
-          id: parseInt(id),
+          id,
         },
       });
     },
