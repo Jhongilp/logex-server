@@ -33,14 +33,18 @@ export const resolvers = {
       if (!context?.currentUser) {
         return new GraphQLError("Unauthorized user");
       }
-      if (customerId) {
-        return context.prisma.shipping.findMany({
-          where: {
-            customerId,
-          },
-        });
+      if (!customerId) {
+        return new GraphQLError("customerId needs to be provided");
       }
-      return context.prisma.shipping.findMany();
+      const allShippings = await context.prisma.shipping.findMany({
+        where: {
+          customerId,
+        },
+      });
+      context.pubSub.publish("onShippingUpdates", {
+        shippings: allShippings,
+      });
+      return allShippings;
     },
     customer: async (_root: any, { id }: any, context: GraphQLContext) => {
       if (!context?.currentUser) {
@@ -50,7 +54,7 @@ export const resolvers = {
       return context.prisma.customer.findUnique({
         where: {
           id,
-          company_nit: context.currentUser?.company_id
+          company_nit: context.currentUser?.company_id,
         },
       });
     },
@@ -193,7 +197,7 @@ export const resolvers = {
       }: any,
       context: GraphQLContext
     ): Promise<any> => {
-      return context.prisma.shipping.create({
+      const newShipping = await context.prisma.shipping.create({
         data: {
           consignee,
           notify,
@@ -208,6 +212,9 @@ export const resolvers = {
           customerId,
         },
       });
+      const allShippings = await context.prisma.shipping.findMany();
+      context.pubSub.publish("onShippingUpdates", { shippings: allShippings });
+      return newShipping;
     },
     updateShipping: async (
       root: any,
@@ -231,7 +238,7 @@ export const resolvers = {
       if (!context?.currentUser) {
         return new GraphQLError("Unauthorized user");
       }
-      return context.prisma.shipping.update({
+      const updatedShipping = await context.prisma.shipping.update({
         where: {
           id,
         },
@@ -248,6 +255,9 @@ export const resolvers = {
           obs,
         },
       });
+      const allShippings = await context.prisma.shipping.findMany();
+      context.pubSub.publish("onShippingUpdates", { shippings: allShippings });
+      return updatedShipping;
     },
     deleteShipping: async (
       _root: any,
@@ -257,11 +267,14 @@ export const resolvers = {
       if (!context?.currentUser) {
         return new GraphQLError("Unauthorized user");
       }
-      return context.prisma.shipping.delete({
+      const deletedShipping = await context.prisma.shipping.delete({
         where: {
           id,
         },
       });
+      const allShippings = await context.prisma.shipping.findMany();
+      context.pubSub.publish("onShippingUpdates", { shippings: allShippings });
+      return deletedShipping;
     },
     createExpo: async (
       root: any,
@@ -300,6 +313,10 @@ export const resolvers = {
     customers: {
       subscribe: (parent: unknown, args: {}, context: GraphQLContext) =>
         context.pubSub.subscribe("onCustomerUpdates"),
+    },
+    shippings: {
+      subscribe: (parent: unknown, args: {}, context: GraphQLContext) =>
+        context.pubSub.subscribe("onShippingUpdates"),
     },
   },
 

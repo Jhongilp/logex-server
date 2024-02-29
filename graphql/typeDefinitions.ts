@@ -27,6 +27,7 @@ export const typeDefinitions = /* GraphQL */ `
 
   type Subscription {
     customers: [Customer]
+    shippings: [Shipping]
   }
 
   type Company {
