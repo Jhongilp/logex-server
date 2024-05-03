@@ -68,11 +68,11 @@ export const resolvers = {
         },
       });
     },
-    expos: async (_root: any, { companyId }: any, context: GraphQLContext) => {
+    expos: async (_root: any, args: any, context: GraphQLContext) => {
       return context.prisma.expo.findMany({
         where: {
           customer: {
-            company_nit: companyId,
+            company_nit: context.currentUser?.company_id,
           },
         },
       });
@@ -280,13 +280,10 @@ export const resolvers = {
       root: any,
       {
         input: {
-          id,
           consecutivo,
           status,
           globalProgress,
-          indicatator_month,
-          oc,
-          createdAt,
+          // createdAt,
           shippingId,
           customerId,
         },
@@ -295,13 +292,10 @@ export const resolvers = {
     ): Promise<any> => {
       return context.prisma.expo.create({
         data: {
-          id,
           consecutivo,
           status,
           globalProgress,
-          indicatator_month,
-          oc,
-          createdAt,
+          createdAt: new Date().toISOString(),
           shippingId,
           customerId,
         },

@@ -46,7 +46,7 @@ model Customer {
 }
 
 model Shipping {
-  id             String      @id @default(uuid())
+  id             String   @id @default(uuid())
   consignee      String
   notify         String
   country        String
@@ -63,12 +63,10 @@ model Shipping {
 }
 
 model Expo {
-  id                String      @id @default(uuid())
+  id                String   @id @default(uuid())
   consecutivo       String
   status            Int
   globalProgress    Int
-  indicatator_month Int
-  oc                String
   createdAt         DateTime @default(now())
   shippingId        String
   shipping          Shipping @relation(fields: [shippingId], references: [id])

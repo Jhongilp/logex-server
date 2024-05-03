@@ -11,7 +11,7 @@ export const typeDefinitions = /* GraphQL */ `
     customer(id: ID!): Customer
     shippings(customerId: ID): [Shipping] # if not customerId provided return all shippings
     shipping(id: ID!): Shipping
-    expos(companyId: ID!): [Expo]
+    expos: [Expo]
   }
 
   type Mutation {
@@ -81,8 +81,6 @@ export const typeDefinitions = /* GraphQL */ `
     consecutivo: String
     status: Int
     globalProgress: Int
-    indicatator_month: Int
-    oc: String
     createdAt: DateTime
     shipping: Shipping
     customer: Customer
@@ -152,10 +150,7 @@ export const typeDefinitions = /* GraphQL */ `
     consecutivo: String
     status: Int
     globalProgress: Int
-    indicatator_month: Int
-    oc: String
-    createdAt: DateTime
-    shippingId: Int
-    customerId: Int
+    shippingId: String
+    customerId: String
   }
 `;
