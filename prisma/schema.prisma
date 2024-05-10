@@ -63,13 +63,23 @@ model Shipping {
 }
 
 model Expo {
-  id                String   @id @default(uuid())
-  consecutivo       String
-  status            Int
-  globalProgress    Int
-  createdAt         DateTime @default(now())
-  shippingId        String
-  shipping          Shipping @relation(fields: [shippingId], references: [id])
-  customerId        String
-  customer          Customer @relation(fields: [customerId], references: [id])
+  id             String   @id @default(uuid())
+  consecutivo    String
+  status         Int
+  globalProgress Int
+  createdAt      DateTime @default(now())
+  shippingId     String
+  shipping       Shipping @relation(fields: [shippingId], references: [id])
+  customerId     String
+  customer       Customer @relation(fields: [customerId], references: [id])
+}
+
+model DefaultExpoActivity {
+  id          Int     @id @default(autoincrement())
+  name        String
+  status      String
+  progress    String
+  responsible String
+  optional    Boolean
+  enabled     Boolean
 }

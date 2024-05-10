@@ -77,6 +77,16 @@ export const resolvers = {
         },
       });
     },
+    defaultExpoActivities: async (
+      _root: any,
+      args: any,
+      context: GraphQLContext
+    ) => {
+      // if (!context?.currentUser) {
+      //   return new GraphQLError("Unauthorized user");
+      // }
+      return context.prisma.defaultExpoActivity.findMany();
+    },
   },
 
   Mutation: {
@@ -300,6 +310,26 @@ export const resolvers = {
           customerId,
         },
       });
+    },
+    createDefaultActivities: async (
+      root: any,
+      { input: { activities } }: any,
+      context: GraphQLContext
+    ): Promise<any> => {
+      // TODO add auth control
+      // if (!context?.currentUser) {
+      //   return new GraphQLError("Unauthorized user");
+      // }
+      
+      try {
+        await context.prisma.defaultExpoActivity.createMany({
+          data: activities,
+        });
+        const defaultActivities = context.prisma.defaultExpoActivity.findMany();
+        return defaultActivities;
+      } catch (error) {
+        console.log("[default activity] error: ", error);
+      }
     },
   },
 

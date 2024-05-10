@@ -12,6 +12,7 @@ export const typeDefinitions = /* GraphQL */ `
     shippings(customerId: ID): [Shipping] # if not customerId provided return all shippings
     shipping(id: ID!): Shipping
     expos: [Expo]
+    defaultExpoActivities: [DefaultExpoActivity]
   }
 
   type Mutation {
@@ -23,6 +24,9 @@ export const typeDefinitions = /* GraphQL */ `
     updateShipping(input: UpdateShippingInput): Shipping
     deleteShipping(id: ID!): Shipping
     createExpo(input: CreateExpoInput): Expo
+    createDefaultActivities(
+      input: CreateDefaultActivitiesInput
+    ): [DefaultExpoActivity]
   }
 
   type Subscription {
@@ -84,6 +88,16 @@ export const typeDefinitions = /* GraphQL */ `
     createdAt: DateTime
     shipping: Shipping
     customer: Customer
+  }
+
+  type DefaultExpoActivity {
+    id: ID!
+    name: String
+    status: String
+    progress: String
+    responsible: String
+    optional: Boolean
+    enabled: Boolean
   }
 
   input CreateCompanyInput {
@@ -152,5 +166,16 @@ export const typeDefinitions = /* GraphQL */ `
     globalProgress: Int
     shippingId: String
     customerId: String
+  }
+  input DefaultExpoActivityInput {
+    name: String
+    status: String
+    progress: String
+    responsible: String
+    optional: Boolean
+    enabled: Boolean
+  }
+  input CreateDefaultActivitiesInput {
+    activities: [DefaultExpoActivityInput]
   }
 `;

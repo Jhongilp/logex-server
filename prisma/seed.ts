@@ -1,11 +1,16 @@
 import { PrismaClient } from "@prisma/client";
+import { initialExpoSettingList } from "../src/app_constants"
+
 const prisma = new PrismaClient();
 
+
 async function main() {
-  await prisma.user.deleteMany({});
-  await prisma.customer.deleteMany({});
-  await prisma.expo.deleteMany({});
-  await prisma.shipping.deleteMany({});
+
+  await prisma.defaultExpoActivity.createMany({data: initialExpoSettingList})
+  // await prisma.user.deleteMany({});
+  // await prisma.customer.deleteMany({});
+  // await prisma.expo.deleteMany({});
+  // await prisma.shipping.deleteMany({});
 
   // await prisma.company.create({
   //   data: {
