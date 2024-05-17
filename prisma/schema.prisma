@@ -13,12 +13,13 @@ datasource db {
 }
 
 model Company {
-  nit      String     @id
-  name     String
-  country  String
-  city     String
-  users    User[]
-  customer Customer[]
+  nit                   String                @id
+  name                  String
+  country               String
+  city                  String
+  users                 User[]
+  customer              Customer[]
+  expoDefaultActivities DefaultExpoActivity[]
 }
 
 model User {
@@ -75,11 +76,13 @@ model Expo {
 }
 
 model DefaultExpoActivity {
-  id          Int     @id @default(autoincrement())
+  id          Int      @id @default(autoincrement())
   name        String
   status      String
   progress    String
   responsible String
   optional    Boolean
   enabled     Boolean
+  Company     Company? @relation(fields: [company_nit], references: [nit])
+  company_nit String?
 }

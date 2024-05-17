@@ -1,6 +1,7 @@
 import { DateTimeResolver } from "graphql-scalars";
 import { GraphQLError } from "graphql";
 import { GraphQLContext } from "../src/index";
+import { initialExpoSettingList } from "../src/app_constants";
 
 export const resolvers = {
   DateTime: DateTimeResolver,
@@ -85,7 +86,11 @@ export const resolvers = {
       // if (!context?.currentUser) {
       //   return new GraphQLError("Unauthorized user");
       // }
-      return context.prisma.defaultExpoActivity.findMany();
+      return context.prisma.defaultExpoActivity.findMany({
+        where: {
+          company_nit: context.currentUser?.company_id,
+        },
+      });
     },
   },
 
@@ -106,29 +111,44 @@ export const resolvers = {
       }: any,
       context: GraphQLContext
     ): Promise<any> => {
-      await context.prisma.company.create({
-        data: {
-          ...company,
-          users: {
-            create: [
-              {
-                id,
-                email,
-                first_name,
-                second_name,
-                first_lastname,
-                second_lastname,
-                role,
-              },
-            ],
+      try {
+        await context.prisma.company.create({
+          data: {
+            ...company,
+            users: {
+              create: [
+                {
+                  id,
+                  email,
+                  first_name,
+                  second_name,
+                  first_lastname,
+                  second_lastname,
+                  role,
+                },
+              ],
+            },
           },
-        },
-      });
-      return context.prisma.user.findUnique({
-        where: {
-          id,
-        },
-      });
+        });
+
+        const companyActivities = initialExpoSettingList.map((activity) => {
+          return {
+            ...activity,
+            company_nit: company.nit,
+          };
+        });
+
+        await context.prisma.defaultExpoActivity.createMany({
+          data: companyActivities,
+        });
+        return context.prisma.user.findUnique({
+          where: {
+            id,
+          },
+        });
+      } catch (error) {
+        console.log("error creating company: ", error);
+      }
     },
     createCustomer: async (
       root: any,
@@ -320,12 +340,16 @@ export const resolvers = {
       // if (!context?.currentUser) {
       //   return new GraphQLError("Unauthorized user");
       // }
-      
+
       try {
         await context.prisma.defaultExpoActivity.createMany({
           data: activities,
         });
-        const defaultActivities = context.prisma.defaultExpoActivity.findMany();
+        const defaultActivities = context.prisma.defaultExpoActivity.findMany({
+          where: {
+            company_nit: context.currentUser?.company_id,
+          },
+        });
         return defaultActivities;
       } catch (error) {
         console.log("[default activity] error: ", error);

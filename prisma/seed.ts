@@ -6,7 +6,7 @@ const prisma = new PrismaClient();
 
 async function main() {
 
-  await prisma.defaultExpoActivity.createMany({data: initialExpoSettingList})
+  // await prisma.defaultExpoActivity.createMany({data: initialExpoSettingList})
   // await prisma.user.deleteMany({});
   // await prisma.customer.deleteMany({});
   // await prisma.expo.deleteMany({});
