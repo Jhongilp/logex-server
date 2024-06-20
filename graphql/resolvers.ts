@@ -2,6 +2,7 @@ import { DateTimeResolver } from "graphql-scalars";
 import { GraphQLError } from "graphql";
 import { GraphQLContext } from "../src/index";
 import { initialExpoSettingList } from "../src/app_constants";
+import { Prisma } from "@prisma/client";
 
 export const resolvers = {
   DateTime: DateTimeResolver,
@@ -139,6 +140,7 @@ export const resolvers = {
         });
 
         await context.prisma.defaultExpoActivity.createMany({
+          // @ts-ignore
           data: companyActivities,
         });
         return context.prisma.user.findUnique({
@@ -320,7 +322,18 @@ export const resolvers = {
       }: any,
       context: GraphQLContext
     ): Promise<any> => {
-      return context.prisma.expo.create({
+      const defaultActivities =
+        await context.prisma.defaultExpoActivity.findMany({
+          where: {
+            company_nit: context.currentUser?.company_id,
+          },
+        });
+      const expoTodoActivities = defaultActivities.map((activity) => {
+        const { id, ...expoTodoInput } = activity;
+        return expoTodoInput;
+      });
+
+      await context.prisma.expo.create({
         data: {
           consecutivo,
           status,
@@ -328,9 +341,15 @@ export const resolvers = {
           createdAt: new Date().toISOString(),
           shippingId,
           customerId,
+          todoList: {
+            create: expoTodoActivities,
+          },
         },
       });
+
+      // after expo is created, create the ExpoTodoActivities
     },
+
     createDefaultActivities: async (
       root: any,
       { input: { activities } }: any,

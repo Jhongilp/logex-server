@@ -1,27 +1,26 @@
-
 export enum ExpoStatus {
-  PrevioCargue = "Previo Cargue",
-  TransitoPuerto = "Transito Puerto",
-  EnPuerto = "En Puerto",
-  TransitoInternacional = "Transito Internacional",
-  EnDestino = "En Destino",
-  Finalizado = "Finalizado",
+  PREVIO_CARGUE,
+  TRANSITO_PUERTO,
+  EN_PUERTO,
+  TRANSITO_INTERNACIONAL,
+  EN_DESTINO,
+  FINALIZADO,
 }
 
 export enum ProgressStatus {
-  "Sin iniciar" = "Sin iniciar",
-  "En curso" = "En curso",
-  "En espera" = "En espera",
-  "Retrasado" = "Retrasado",
-  "Completado" = "Completado",
+  SIN_INICIAR,
+  EN_CURSO,
+  EN_ESPERA,
+  RETRASADO,
+  COMPLETADO,
 }
 
 export const initialExpoSettingList = [
   {
     // id: "1",
     name: "Solicitud de reserva",
-    status: ExpoStatus.PrevioCargue,
-    progress: ProgressStatus["Sin iniciar"],
+    status: ExpoStatus.PREVIO_CARGUE,
+    progress: ProgressStatus.SIN_INICIAR,
     responsible: "",
     optional: false,
     enabled: true,
@@ -29,8 +28,8 @@ export const initialExpoSettingList = [
   {
     // id: "2",
     name: "Confirmación de reserva",
-    status: ExpoStatus.PrevioCargue,
-    progress: ProgressStatus["Sin iniciar"],
+    status: ExpoStatus.PREVIO_CARGUE,
+    progress: ProgressStatus.SIN_INICIAR,
     responsible: "",
     optional: false,
     enabled: true,
@@ -38,8 +37,8 @@ export const initialExpoSettingList = [
   {
     // id: "3",
     name: "Coordinación de transporte terrestre",
-    status: ExpoStatus.PrevioCargue,
-    progress: ProgressStatus["Sin iniciar"],
+    status: ExpoStatus.PREVIO_CARGUE,
+    progress: ProgressStatus.SIN_INICIAR,
     responsible: "",
     optional: false,
     enabled: true,
@@ -47,8 +46,8 @@ export const initialExpoSettingList = [
   {
     // id: "4",
     name: "Notificación al agente de aduanas",
-    status: ExpoStatus.PrevioCargue,
-    progress: ProgressStatus["Sin iniciar"],
+    status: ExpoStatus.PREVIO_CARGUE,
+    progress: ProgressStatus.SIN_INICIAR,
     responsible: "",
     optional: false,
     enabled: true,
@@ -56,8 +55,8 @@ export const initialExpoSettingList = [
   {
     // id: "5",
     name: "Cargue en planta",
-    status: ExpoStatus.PrevioCargue,
-    progress: ProgressStatus["Sin iniciar"],
+    status: ExpoStatus.PREVIO_CARGUE,
+    progress: ProgressStatus.SIN_INICIAR,
     responsible: "",
     optional: false,
     enabled: true,
@@ -65,8 +64,8 @@ export const initialExpoSettingList = [
   {
     // id: "6",
     name: "Ingreso a puerto",
-    status: ExpoStatus.TransitoPuerto,
-    progress: ProgressStatus["Sin iniciar"],
+    status: ExpoStatus.TRANSITO_PUERTO,
+    progress: ProgressStatus.SIN_INICIAR,
     responsible: "",
     optional: false,
     enabled: true,
@@ -74,8 +73,8 @@ export const initialExpoSettingList = [
   {
     // id: "7",
     name: "Aprobación documento de transporte",
-    status: ExpoStatus.EnPuerto,
-    progress: ProgressStatus["Sin iniciar"],
+    status: ExpoStatus.EN_PUERTO,
+    progress: ProgressStatus.SIN_INICIAR,
     responsible: "",
     optional: false,
     enabled: true,
@@ -83,8 +82,8 @@ export const initialExpoSettingList = [
   {
     // id: "8",
     name: "Confirmación zarpe",
-    status: ExpoStatus.EnPuerto,
-    progress: ProgressStatus["Sin iniciar"],
+    status: ExpoStatus.EN_PUERTO,
+    progress: ProgressStatus.SIN_INICIAR,
     responsible: "",
     optional: false,
     enabled: true,
@@ -92,8 +91,8 @@ export const initialExpoSettingList = [
   {
     // id: "9",
     name: "Notificar al cliente",
-    status: ExpoStatus.TransitoInternacional,
-    progress: ProgressStatus["Sin iniciar"],
+    status: ExpoStatus.TRANSITO_INTERNACIONAL,
+    progress: ProgressStatus.SIN_INICIAR,
     responsible: "",
     optional: false,
     enabled: true,
@@ -101,8 +100,8 @@ export const initialExpoSettingList = [
   {
     // id: "10",
     name: "Enviar documentos originales al cliente",
-    status: ExpoStatus.TransitoInternacional,
-    progress: ProgressStatus["Sin iniciar"],
+    status: ExpoStatus.TRANSITO_INTERNACIONAL,
+    progress: ProgressStatus.SIN_INICIAR,
     responsible: "",
     optional: false,
     enabled: true,
@@ -110,8 +109,8 @@ export const initialExpoSettingList = [
   {
     // id: "11",
     name: "Confirmación arribo a destino",
-    status: ExpoStatus.TransitoInternacional,
-    progress: ProgressStatus["Sin iniciar"],
+    status: ExpoStatus.TRANSITO_INTERNACIONAL,
+    progress: ProgressStatus.SIN_INICIAR,
     responsible: "",
     optional: false,
     enabled: true,
@@ -119,8 +118,8 @@ export const initialExpoSettingList = [
   {
     // id: "12",
     name: "Confirmación entrega final al cliente",
-    status: ExpoStatus.Finalizado,
-    progress: ProgressStatus["Sin iniciar"],
+    status: ExpoStatus.FINALIZADO,
+    progress: ProgressStatus.SIN_INICIAR,
     responsible: "",
     optional: false,
     enabled: true,
@@ -128,8 +127,8 @@ export const initialExpoSettingList = [
   {
     // id: "13",
     name: "DEX",
-    status: ExpoStatus.Finalizado,
-    progress: ProgressStatus["Sin iniciar"],
+    status: ExpoStatus.FINALIZADO,
+    progress: ProgressStatus.SIN_INICIAR,
     responsible: "",
     optional: false,
     enabled: true,
@@ -137,8 +136,8 @@ export const initialExpoSettingList = [
   {
     // id: "14",
     name: "Legalización divisas",
-    status: ExpoStatus.EnDestino,
-    progress: ProgressStatus["Sin iniciar"],
+    status: ExpoStatus.EN_DESTINO,
+    progress: ProgressStatus.SIN_INICIAR,
     responsible: "",
     optional: false,
     enabled: true,
@@ -146,8 +145,8 @@ export const initialExpoSettingList = [
   {
     // id: "15",
     name: "Liquidación",
-    status: ExpoStatus.EnDestino,
-    progress: ProgressStatus["Sin iniciar"],
+    status: ExpoStatus.EN_DESTINO,
+    progress: ProgressStatus.SIN_INICIAR,
     responsible: "",
     optional: false,
     enabled: true,
@@ -155,11 +154,10 @@ export const initialExpoSettingList = [
   {
     // id: "16",
     name: "Aprobación documentos y archivo",
-    status: ExpoStatus.EnDestino,
-    progress: ProgressStatus["Sin iniciar"],
+    status: ExpoStatus.EN_DESTINO,
+    progress: ProgressStatus.SIN_INICIAR,
     responsible: "",
     optional: false,
     enabled: true,
   },
 ];
-

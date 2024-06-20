@@ -64,25 +64,57 @@ model Shipping {
 }
 
 model Expo {
-  id             String   @id @default(uuid())
+  id             String             @id @default(uuid())
   consecutivo    String
   status         Int
   globalProgress Int
-  createdAt      DateTime @default(now())
+  createdAt      DateTime           @default(now())
   shippingId     String
-  shipping       Shipping @relation(fields: [shippingId], references: [id])
+  shipping       Shipping           @relation(fields: [shippingId], references: [id])
   customerId     String
-  customer       Customer @relation(fields: [customerId], references: [id])
+  customer       Customer           @relation(fields: [customerId], references: [id])
+  todoList       ExpoTodoActivity[]
 }
 
-model DefaultExpoActivity {
-  id          Int      @id @default(autoincrement())
+enum ExpoStatus {
+  PREVIO_CARGUE
+  TRANSITO_PUERTO
+  EN_PUERTO
+  TRANSITO_INTERNACIONAL
+  EN_DESTINO
+  FINALIZADO
+}
+
+enum ProgressStatus {
+  SIN_INICIAR
+  EN_CURSO
+  EN_ESPERA
+  RETRASADO
+  COMPLETADO
+}
+
+model ExpoTodoActivity {
+  id          String         @id @default(uuid())
   name        String
-  status      String
-  progress    String
+  status      ExpoStatus     @default(PREVIO_CARGUE)
+  progress    ProgressStatus @default(SIN_INICIAR)
   responsible String
   optional    Boolean
   enabled     Boolean
-  Company     Company? @relation(fields: [company_nit], references: [nit])
+  completedAt DateTime?
+  deadline    DateTime?
+  Expo        Expo?          @relation(fields: [expoId], references: [id])
+  expoId      String?
+}
+
+model DefaultExpoActivity {
+  id          Int            @id @default(autoincrement())
+  name        String
+  status      ExpoStatus     @default(PREVIO_CARGUE)
+  progress    ProgressStatus @default(SIN_INICIAR)
+  responsible String
+  optional    Boolean
+  enabled     Boolean
+  Company     Company?       @relation(fields: [company_nit], references: [nit])
   company_nit String?
 }

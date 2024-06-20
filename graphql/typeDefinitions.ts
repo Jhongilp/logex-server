@@ -88,16 +88,47 @@ export const typeDefinitions = /* GraphQL */ `
     createdAt: DateTime
     shipping: Shipping
     customer: Customer
+    todoList: [ExpoTodoActivity]
+  }
+
+  enum ExpoStatus {
+    PREVIO_CARGUE
+    TRANSITO_PUERTO
+    EN_PUERTO
+    TRANSITO_INTERNACIONAL
+    EN_DESTINO
+    FINALIZADO
+  }
+
+  enum ProgressStatus {
+    SIN_INICIAR
+    EN_CURSO
+    EN_ESPERA
+    RETRASADO
+    COMPLETADO
   }
 
   type DefaultExpoActivity {
     id: ID!
     name: String
-    status: String
-    progress: String
+    status: ExpoStatus
+    progress: ProgressStatus
     responsible: String
     optional: Boolean
     enabled: Boolean
+  }
+
+  type ExpoTodoActivity {
+    id: ID!
+    name: String
+    status: ExpoStatus
+    progress: ProgressStatus
+    responsible: String
+    optional: Boolean
+    enabled: Boolean
+    completedAt: DateTime
+    deadline: DateTime
+    expoId: String
   }
 
   input CreateCompanyInput {
