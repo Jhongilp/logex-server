@@ -1,3 +1,9 @@
+-- CreateEnum
+CREATE TYPE "ExpoStatus" AS ENUM ('PREVIO_CARGUE', 'TRANSITO_PUERTO', 'EN_PUERTO', 'TRANSITO_INTERNACIONAL', 'EN_DESTINO', 'FINALIZADO');
+
+-- CreateEnum
+CREATE TYPE "ProgressStatus" AS ENUM ('SIN_INICIAR', 'EN_CURSO', 'EN_ESPERA', 'RETRASADO', 'COMPLETADO');
+
 -- CreateTable
 CREATE TABLE "Company" (
     "nit" TEXT NOT NULL,
@@ -34,7 +40,7 @@ CREATE TABLE "Customer" (
 
 -- CreateTable
 CREATE TABLE "Shipping" (
-    "id" SERIAL NOT NULL,
+    "id" TEXT NOT NULL,
     "consignee" TEXT NOT NULL,
     "notify" TEXT NOT NULL,
     "country" TEXT NOT NULL,
@@ -52,17 +58,46 @@ CREATE TABLE "Shipping" (
 
 -- CreateTable
 CREATE TABLE "Expo" (
-    "id" SERIAL NOT NULL,
     "consecutivo" TEXT NOT NULL,
     "status" INTEGER NOT NULL,
     "globalProgress" INTEGER NOT NULL,
-    "indicatator_month" INTEGER NOT NULL,
-    "oc" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "shippingId" INTEGER NOT NULL,
+    "shippingId" TEXT NOT NULL,
     "customerId" TEXT NOT NULL,
+    "company_nit" TEXT NOT NULL,
 
-    CONSTRAINT "Expo_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "Expo_pkey" PRIMARY KEY ("consecutivo","company_nit")
+);
+
+-- CreateTable
+CREATE TABLE "ExpoTodoActivity" (
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "status" "ExpoStatus" NOT NULL DEFAULT 'PREVIO_CARGUE',
+    "progress" "ProgressStatus" NOT NULL DEFAULT 'SIN_INICIAR',
+    "responsible" TEXT NOT NULL,
+    "optional" BOOLEAN NOT NULL,
+    "enabled" BOOLEAN NOT NULL,
+    "completedAt" TIMESTAMP(3),
+    "deadline" TIMESTAMP(3),
+    "expoId" TEXT NOT NULL,
+    "company_nit" TEXT NOT NULL,
+
+    CONSTRAINT "ExpoTodoActivity_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "DefaultExpoActivity" (
+    "id" SERIAL NOT NULL,
+    "name" TEXT NOT NULL,
+    "status" "ExpoStatus" NOT NULL DEFAULT 'PREVIO_CARGUE',
+    "progress" "ProgressStatus" NOT NULL DEFAULT 'SIN_INICIAR',
+    "responsible" TEXT NOT NULL,
+    "optional" BOOLEAN NOT NULL,
+    "enabled" BOOLEAN NOT NULL,
+    "company_nit" TEXT,
+
+    CONSTRAINT "DefaultExpoActivity_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
@@ -85,3 +120,12 @@ ALTER TABLE "Expo" ADD CONSTRAINT "Expo_shippingId_fkey" FOREIGN KEY ("shippingI
 
 -- AddForeignKey
 ALTER TABLE "Expo" ADD CONSTRAINT "Expo_customerId_fkey" FOREIGN KEY ("customerId") REFERENCES "Customer"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Expo" ADD CONSTRAINT "Expo_company_nit_fkey" FOREIGN KEY ("company_nit") REFERENCES "Company"("nit") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "ExpoTodoActivity" ADD CONSTRAINT "ExpoTodoActivity_expoId_company_nit_fkey" FOREIGN KEY ("expoId", "company_nit") REFERENCES "Expo"("consecutivo", "company_nit") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "DefaultExpoActivity" ADD CONSTRAINT "DefaultExpoActivity_company_nit_fkey" FOREIGN KEY ("company_nit") REFERENCES "Company"("nit") ON DELETE SET NULL ON UPDATE CASCADE;
