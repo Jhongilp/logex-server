@@ -12,6 +12,7 @@ export const typeDefinitions = /* GraphQL */ `
     shippings(customerId: ID): [Shipping] # if not customerId provided return all shippings
     shipping(id: ID!): Shipping
     expos: [Expo]
+    expo(id: ID!): Expo
     defaultExpoActivities: [DefaultExpoActivity]
   }
 
@@ -81,7 +82,6 @@ export const typeDefinitions = /* GraphQL */ `
   }
 
   type Expo {
-    id: ID!
     consecutivo: String
     status: Int
     globalProgress: Int

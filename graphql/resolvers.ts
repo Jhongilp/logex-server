@@ -71,11 +71,23 @@ export const resolvers = {
       });
     },
     expos: async (_root: any, args: any, context: GraphQLContext) => {
+      // if (!context?.currentUser) {
+      //   return new GraphQLError("Unauthorized user");
+      // }
       return context.prisma.expo.findMany({
         where: {
-          customer: {
-            company_nit: context.currentUser?.company_id,
-          },
+          company_nit: context.currentUser?.company_id,
+        },
+      });
+    },
+    expo: async (_root: any, {id}: any, context: GraphQLContext) => {
+      // if (!context?.currentUser) {
+      //   return new GraphQLError("Unauthorized user");
+      // }
+      // console.log("[get expo] args: ", args);
+      return context.prisma.expo.findUnique({
+        where: {
+          consecutivo: id,
         },
       });
     },
@@ -322,10 +334,14 @@ export const resolvers = {
       }: any,
       context: GraphQLContext
     ): Promise<any> => {
+      if (!context?.currentUser) {
+        return new GraphQLError("Unauthorized user");
+      }
+
       const defaultActivities =
         await context.prisma.defaultExpoActivity.findMany({
           where: {
-            company_nit: context.currentUser?.company_id,
+            company_nit: context.currentUser.company_id,
           },
         });
       const expoTodoActivities = defaultActivities.map((activity) => {
@@ -333,8 +349,9 @@ export const resolvers = {
         return expoTodoInput;
       });
 
-      await context.prisma.expo.create({
+      return context.prisma.expo.create({
         data: {
+          company_nit: context.currentUser.company_id,
           consecutivo,
           status,
           globalProgress,
@@ -436,6 +453,12 @@ export const resolvers = {
       context.prisma.shipping.findUnique({
         where: {
           id: expo.shippingId,
+        },
+      }),
+    todoList: (expo: any, args: any, context: GraphQLContext) =>
+      context.prisma.expoTodoActivity.findMany({
+        where: {
+          expoId: expo.id,
         },
       }),
   },
