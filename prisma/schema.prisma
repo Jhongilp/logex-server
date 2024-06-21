@@ -19,6 +19,7 @@ model Company {
   city                  String
   users                 User[]
   customer              Customer[]
+  expos                 Expo[]
   expoDefaultActivities DefaultExpoActivity[]
 }
 
@@ -64,8 +65,7 @@ model Shipping {
 }
 
 model Expo {
-  id             String             @id @default(uuid())
-  consecutivo    String
+  consecutivo    String             @id @unique
   status         Int
   globalProgress Int
   createdAt      DateTime           @default(now())
@@ -74,6 +74,8 @@ model Expo {
   customerId     String
   customer       Customer           @relation(fields: [customerId], references: [id])
   todoList       ExpoTodoActivity[]
+  Company        Company            @relation(fields: [company_nit], references: [nit])
+  company_nit    String
 }
 
 enum ExpoStatus {
@@ -103,8 +105,9 @@ model ExpoTodoActivity {
   enabled     Boolean
   completedAt DateTime?
   deadline    DateTime?
-  Expo        Expo?          @relation(fields: [expoId], references: [id])
-  expoId      String?
+  Expo        Expo?          @relation(fields: [expoId], references: [consecutivo])
+  expoId      String
+  company_nit String
 }
 
 model DefaultExpoActivity {
@@ -116,5 +119,5 @@ model DefaultExpoActivity {
   optional    Boolean
   enabled     Boolean
   Company     Company?       @relation(fields: [company_nit], references: [nit])
-  company_nit String?
+  company_nit String
 }
