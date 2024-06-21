@@ -1,19 +1,4 @@
-export enum ExpoStatus {
-  PREVIO_CARGUE,
-  TRANSITO_PUERTO,
-  EN_PUERTO,
-  TRANSITO_INTERNACIONAL,
-  EN_DESTINO,
-  FINALIZADO,
-}
-
-export enum ProgressStatus {
-  SIN_INICIAR,
-  EN_CURSO,
-  EN_ESPERA,
-  RETRASADO,
-  COMPLETADO,
-}
+import { ExpoStatus, ProgressStatus, Expo } from "@prisma/client";
 
 export const initialExpoSettingList = [
   {
