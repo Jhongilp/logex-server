@@ -28,6 +28,9 @@ export const typeDefinitions = /* GraphQL */ `
     createDefaultActivities(
       input: CreateDefaultActivitiesInput
     ): [DefaultExpoActivity]
+    updateDefaultExpoActivity(
+      input: UpdateDefaultActivityInput
+    ): DefaultExpoActivity
   }
 
   type Subscription {
@@ -198,6 +201,8 @@ export const typeDefinitions = /* GraphQL */ `
     shippingId: String
     customerId: String
   }
+
+  # EXPO ACTIVITIES
   input DefaultExpoActivityInput {
     name: String
     status: String
@@ -208,5 +213,14 @@ export const typeDefinitions = /* GraphQL */ `
   }
   input CreateDefaultActivitiesInput {
     activities: [DefaultExpoActivityInput]
+  }
+  input UpdateDefaultActivityInput {
+    id: ID!
+    name: String
+    status: String
+    progress: String
+    responsible: String
+    optional: Boolean
+    enabled: Boolean
   }
 `;

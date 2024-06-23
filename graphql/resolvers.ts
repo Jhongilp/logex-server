@@ -80,7 +80,7 @@ export const resolvers = {
         },
       });
     },
-    expo: async (_root: any, {id}: any, context: GraphQLContext) => {
+    expo: async (_root: any, { id }: any, context: GraphQLContext) => {
       // if (!context?.currentUser) {
       //   return new GraphQLError("Unauthorized user");
       // }
@@ -320,6 +320,8 @@ export const resolvers = {
       context.pubSub.publish("onShippingUpdates", { shippings: allShippings });
       return deletedShipping;
     },
+
+    // +++ expo
     createExpo: async (
       root: any,
       {
@@ -367,6 +369,7 @@ export const resolvers = {
       // after expo is created, create the ExpoTodoActivities
     },
 
+    // +++ activities
     createDefaultActivities: async (
       root: any,
       { input: { activities } }: any,
@@ -390,6 +393,33 @@ export const resolvers = {
       } catch (error) {
         console.log("[default activity] error: ", error);
       }
+    },
+    updateDefaultExpoActivity: async (
+      root: any,
+      {
+        input: { id, name, status, progress, responsible, optional, enabled },
+      }: any,
+      context: GraphQLContext
+    ): Promise<any> => {
+      if (!context?.currentUser) {
+        return new GraphQLError("Unauthorized user");
+      }
+      const updatedDefaultExpoActivity =
+        await context.prisma.defaultExpoActivity.update({
+          where: {
+            id: parseInt(id),
+            company_nit: context.currentUser.company_id,
+          },
+          data: {
+            name,
+            status,
+            progress,
+            responsible,
+            optional,
+            enabled,
+          },
+        });
+      return updatedDefaultExpoActivity;
     },
   },
 
