@@ -421,6 +421,30 @@ export const resolvers = {
         });
       return updatedDefaultExpoActivity;
     },
+    updateTodoExpoActivity: async (
+      root: any,
+      {
+        // input: { id, name, status, progress, responsible, optional, enabled },
+        input,
+      }: any,
+      context: GraphQLContext
+    ): Promise<any> => {
+      // if (!context?.currentUser) {
+      //   return new GraphQLError("Unauthorized user");
+      // }
+      console.log("[update expo todo] input: ", input);
+      const updatedExpoTodoActivity =
+        await context.prisma.expoTodoActivity.update({
+          where: {
+            id: input.id,
+            company_nit: context.currentUser?.company_id,
+          },
+          data: {
+            ...input,
+          },
+        });
+      return updatedExpoTodoActivity;
+    },
   },
 
   Subscription: {

@@ -31,6 +31,7 @@ export const typeDefinitions = /* GraphQL */ `
     updateDefaultExpoActivity(
       input: UpdateDefaultActivityInput
     ): DefaultExpoActivity
+    updateTodoExpoActivity(input: UpdateTodoExpoActivityInput): ExpoTodoActivity
   }
 
   type Subscription {
@@ -222,5 +223,18 @@ export const typeDefinitions = /* GraphQL */ `
     responsible: String
     optional: Boolean
     enabled: Boolean
+  }
+
+  input UpdateTodoExpoActivityInput {
+    id: ID!
+    name: String
+    status: ExpoStatus
+    progress: ProgressStatus
+    responsible: String
+    optional: Boolean
+    enabled: Boolean
+    completedAt: DateTime
+    deadline: DateTime
+    expoId: String
   }
 `;
