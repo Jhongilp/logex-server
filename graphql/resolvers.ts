@@ -436,12 +436,12 @@ export const resolvers = {
         activity
       );
       const expoId = activity.expoId;
-      delete activity.expoId;
+      delete activity.expoId; // still don't know why this is necessary. Primas should be able to handle this. I guess is something related to the relation between expo and todoList
       return await context.prisma.expo.update({
         where: {
           consecutivo: expoId,
-          company_nit: "88888888",
-          // company_nit: context.currentUser?.company_id,
+          company_nit: context.currentUser?.company_id,
+          // company_nit: "88888888",
         },
         data: {
           status,
@@ -450,8 +450,6 @@ export const resolvers = {
             updateMany: {
               where: {
                 id: activity.id,
-                // company_nit: context.currentUser?.company_id,
-                // company_nit: "88888888",
               },
               data: {
                 ...activity,
@@ -460,19 +458,6 @@ export const resolvers = {
           },
         },
       });
-
-      const updatedExpoTodoActivity =
-        await context.prisma.expoTodoActivity.update({
-          where: {
-            id: activity.id,
-            // company_nit: context.currentUser?.company_id,
-            company_nit: "88888888",
-          },
-          data: {
-            ...activity,
-          },
-        });
-      return updatedExpoTodoActivity;
     },
   },
 

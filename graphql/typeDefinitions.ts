@@ -89,7 +89,7 @@ export const typeDefinitions = /* GraphQL */ `
 
   type Expo {
     consecutivo: String
-    status: Int
+    status: ExpoStatus
     globalProgress: Int
     createdAt: DateTime
     shipping: Shipping
