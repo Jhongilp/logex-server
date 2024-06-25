@@ -64,20 +64,6 @@ model Shipping {
   expos          Expo[]
 }
 
-model Expo {
-  consecutivo    String             @id @unique
-  status         Int
-  globalProgress Int
-  createdAt      DateTime           @default(now())
-  shippingId     String
-  shipping       Shipping           @relation(fields: [shippingId], references: [id])
-  customerId     String
-  customer       Customer           @relation(fields: [customerId], references: [id])
-  todoList       ExpoTodoActivity[]
-  Company        Company            @relation(fields: [company_nit], references: [nit])
-  company_nit    String
-}
-
 enum ExpoStatus {
   PREVIO_CARGUE
   TRANSITO_PUERTO
@@ -93,6 +79,19 @@ enum ProgressStatus {
   EN_ESPERA
   RETRASADO
   COMPLETADO
+}
+model Expo {
+  consecutivo    String             @id @unique
+  status         ExpoStatus         @default(PREVIO_CARGUE)
+  globalProgress Int
+  createdAt      DateTime           @default(now())
+  shippingId     String
+  shipping       Shipping           @relation(fields: [shippingId], references: [id])
+  customerId     String
+  customer       Customer           @relation(fields: [customerId], references: [id])
+  todoList       ExpoTodoActivity[]
+  Company        Company            @relation(fields: [company_nit], references: [nit])
+  company_nit    String
 }
 
 model ExpoTodoActivity {

@@ -1,8 +1,7 @@
-import { ExpoStatus, ProgressStatus, Expo } from "@prisma/client";
+import { ExpoStatus, ProgressStatus } from "@prisma/client";
 
 export const initialExpoSettingList = [
   {
-    // id: "1",
     name: "Solicitud de reserva",
     status: ExpoStatus.PREVIO_CARGUE,
     progress: ProgressStatus.SIN_INICIAR,
@@ -11,7 +10,6 @@ export const initialExpoSettingList = [
     enabled: true,
   },
   {
-    // id: "2",
     name: "Confirmación de reserva",
     status: ExpoStatus.PREVIO_CARGUE,
     progress: ProgressStatus.SIN_INICIAR,
@@ -20,7 +18,6 @@ export const initialExpoSettingList = [
     enabled: true,
   },
   {
-    // id: "3",
     name: "Coordinación de transporte terrestre",
     status: ExpoStatus.PREVIO_CARGUE,
     progress: ProgressStatus.SIN_INICIAR,
@@ -29,7 +26,6 @@ export const initialExpoSettingList = [
     enabled: true,
   },
   {
-    // id: "4",
     name: "Notificación al agente de aduanas",
     status: ExpoStatus.PREVIO_CARGUE,
     progress: ProgressStatus.SIN_INICIAR,
@@ -38,7 +34,6 @@ export const initialExpoSettingList = [
     enabled: true,
   },
   {
-    // id: "5",
     name: "Cargue en planta",
     status: ExpoStatus.PREVIO_CARGUE,
     progress: ProgressStatus.SIN_INICIAR,
@@ -47,7 +42,6 @@ export const initialExpoSettingList = [
     enabled: true,
   },
   {
-    // id: "6",
     name: "Ingreso a puerto",
     status: ExpoStatus.TRANSITO_PUERTO,
     progress: ProgressStatus.SIN_INICIAR,
@@ -56,7 +50,6 @@ export const initialExpoSettingList = [
     enabled: true,
   },
   {
-    // id: "7",
     name: "Aprobación documento de transporte",
     status: ExpoStatus.EN_PUERTO,
     progress: ProgressStatus.SIN_INICIAR,
@@ -65,7 +58,6 @@ export const initialExpoSettingList = [
     enabled: true,
   },
   {
-    // id: "8",
     name: "Confirmación zarpe",
     status: ExpoStatus.EN_PUERTO,
     progress: ProgressStatus.SIN_INICIAR,
@@ -74,7 +66,6 @@ export const initialExpoSettingList = [
     enabled: true,
   },
   {
-    // id: "9",
     name: "Notificar al cliente",
     status: ExpoStatus.TRANSITO_INTERNACIONAL,
     progress: ProgressStatus.SIN_INICIAR,
@@ -83,7 +74,6 @@ export const initialExpoSettingList = [
     enabled: true,
   },
   {
-    // id: "10",
     name: "Enviar documentos originales al cliente",
     status: ExpoStatus.TRANSITO_INTERNACIONAL,
     progress: ProgressStatus.SIN_INICIAR,
@@ -92,7 +82,6 @@ export const initialExpoSettingList = [
     enabled: true,
   },
   {
-    // id: "11",
     name: "Confirmación arribo a destino",
     status: ExpoStatus.TRANSITO_INTERNACIONAL,
     progress: ProgressStatus.SIN_INICIAR,
@@ -101,7 +90,6 @@ export const initialExpoSettingList = [
     enabled: true,
   },
   {
-    // id: "12",
     name: "Confirmación entrega final al cliente",
     status: ExpoStatus.FINALIZADO,
     progress: ProgressStatus.SIN_INICIAR,
@@ -110,7 +98,6 @@ export const initialExpoSettingList = [
     enabled: true,
   },
   {
-    // id: "13",
     name: "DEX",
     status: ExpoStatus.FINALIZADO,
     progress: ProgressStatus.SIN_INICIAR,
@@ -119,7 +106,6 @@ export const initialExpoSettingList = [
     enabled: true,
   },
   {
-    // id: "14",
     name: "Legalización divisas",
     status: ExpoStatus.EN_DESTINO,
     progress: ProgressStatus.SIN_INICIAR,
@@ -128,7 +114,6 @@ export const initialExpoSettingList = [
     enabled: true,
   },
   {
-    // id: "15",
     name: "Liquidación",
     status: ExpoStatus.EN_DESTINO,
     progress: ProgressStatus.SIN_INICIAR,
@@ -137,7 +122,6 @@ export const initialExpoSettingList = [
     enabled: true,
   },
   {
-    // id: "16",
     name: "Aprobación documentos y archivo",
     status: ExpoStatus.EN_DESTINO,
     progress: ProgressStatus.SIN_INICIAR,

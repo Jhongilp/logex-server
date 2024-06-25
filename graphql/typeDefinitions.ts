@@ -25,13 +25,15 @@ export const typeDefinitions = /* GraphQL */ `
     updateShipping(input: UpdateShippingInput): Shipping
     deleteShipping(id: ID!): Shipping
     createExpo(input: CreateExpoInput): Expo
+    # updateExpo(input: UpdateExpoInput): Expo
     createDefaultActivities(
       input: CreateDefaultActivitiesInput
     ): [DefaultExpoActivity]
     updateDefaultExpoActivity(
       input: UpdateDefaultActivityInput
     ): DefaultExpoActivity
-    updateTodoExpoActivity(input: UpdateTodoExpoActivityInput): ExpoTodoActivity
+    # updateTodoExpoActivity(input: UpdateTodoExpoActivityInput): ExpoTodoActivity
+    updateTodoExpoActivity(input: UpdateTodoExpoActivityInput): Expo
   }
 
   type Subscription {
@@ -225,8 +227,9 @@ export const typeDefinitions = /* GraphQL */ `
     enabled: Boolean
   }
 
-  input UpdateTodoExpoActivityInput {
+  input TodoExpoActivityInput {
     id: ID!
+    expoId: String
     name: String
     status: ExpoStatus
     progress: ProgressStatus
@@ -235,6 +238,11 @@ export const typeDefinitions = /* GraphQL */ `
     enabled: Boolean
     completedAt: DateTime
     deadline: DateTime
-    expoId: String
+  }
+
+  input UpdateTodoExpoActivityInput {
+    activity: TodoExpoActivityInput
+    status: ExpoStatus
+    globalProgress: Int
   }
 `;

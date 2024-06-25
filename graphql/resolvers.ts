@@ -2,7 +2,6 @@ import { DateTimeResolver } from "graphql-scalars";
 import { GraphQLError } from "graphql";
 import { GraphQLContext } from "../src/index";
 import { initialExpoSettingList } from "../src/app_constants";
-import { Prisma } from "@prisma/client";
 
 export const resolvers = {
   DateTime: DateTimeResolver,
@@ -404,6 +403,7 @@ export const resolvers = {
       if (!context?.currentUser) {
         return new GraphQLError("Unauthorized user");
       }
+
       const updatedDefaultExpoActivity =
         await context.prisma.defaultExpoActivity.update({
           where: {
@@ -423,23 +423,53 @@ export const resolvers = {
     },
     updateTodoExpoActivity: async (
       root: any,
-      {
-        input,
-      }: any,
+      { input: { activity, status, globalProgress } }: any,
       context: GraphQLContext
     ): Promise<any> => {
-      if (!context?.currentUser) {
-        return new GraphQLError("Unauthorized user");
-      }
+      // if (!context?.currentUser) {
+      //   return new GraphQLError("Unauthorized user");
+      // }
+      console.log(
+        "[updateTodoExpoActivity] status, globalProgress: ",
+        status,
+        globalProgress,
+        activity
+      );
+      const expoId = activity.expoId;
+      delete activity.expoId;
+      return await context.prisma.expo.update({
+        where: {
+          consecutivo: expoId,
+          company_nit: "88888888",
+          // company_nit: context.currentUser?.company_id,
+        },
+        data: {
+          status,
+          globalProgress,
+          todoList: {
+            updateMany: {
+              where: {
+                id: activity.id,
+                // company_nit: context.currentUser?.company_id,
+                // company_nit: "88888888",
+              },
+              data: {
+                ...activity,
+              },
+            },
+          },
+        },
+      });
 
       const updatedExpoTodoActivity =
         await context.prisma.expoTodoActivity.update({
           where: {
-            id: input.id,
-            company_nit: context.currentUser?.company_id,
+            id: activity.id,
+            // company_nit: context.currentUser?.company_id,
+            company_nit: "88888888",
           },
           data: {
-            ...input,
+            ...activity,
           },
         });
       return updatedExpoTodoActivity;
