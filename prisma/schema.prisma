@@ -80,6 +80,7 @@ enum ProgressStatus {
   RETRASADO
   COMPLETADO
 }
+
 model Expo {
   consecutivo    String             @id @unique
   status         ExpoStatus         @default(PREVIO_CARGUE)
@@ -92,6 +93,7 @@ model Expo {
   todoList       ExpoTodoActivity[]
   Company        Company            @relation(fields: [company_nit], references: [nit])
   company_nit    String
+  booking        Booking?
 }
 
 model ExpoTodoActivity {
@@ -119,4 +121,29 @@ model DefaultExpoActivity {
   enabled     Boolean
   Company     Company?       @relation(fields: [company_nit], references: [nit])
   company_nit String
+}
+
+model Booking {
+  id                 String    @id @default(uuid())
+  consignee          String
+  notify             String
+  shippingCompany    String
+  broker             String
+  transportMode      String
+  cityBondPort       String
+  bondPort           String
+  destinationCountry String
+  destinationCity    String
+  bookingNumber      String
+  billOfLandingId    String
+  vesselName         String
+  voyage             String
+  eta                DateTime?
+  etd                DateTime?
+  etaDestination     DateTime?
+  documentsDeadline  DateTime?
+  inPortDeadline     DateTime?
+  rollover           Boolean?
+  expo               Expo      @relation(fields: [expoId], references: [consecutivo])
+  expoId             String    @unique
 }

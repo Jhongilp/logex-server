@@ -1,5 +1,5 @@
 import { createServer } from "node:http";
-import { createYoga, YogaInitialContext } from "graphql-yoga";
+import { createYoga } from "graphql-yoga";
 import { schema } from "./schema";
 import { PrismaClient, User } from "@prisma/client";
 import { prisma } from "./db";

@@ -34,6 +34,7 @@ export const typeDefinitions = /* GraphQL */ `
     ): DefaultExpoActivity
     # updateTodoExpoActivity(input: UpdateTodoExpoActivityInput): ExpoTodoActivity
     updateTodoExpoActivity(input: UpdateTodoExpoActivityInput): Expo
+    createBooking(input: CreateBookingInput): Booking
   }
 
   type Subscription {
@@ -92,8 +93,9 @@ export const typeDefinitions = /* GraphQL */ `
     status: ExpoStatus
     globalProgress: Int
     createdAt: DateTime
-    shipping: Shipping
     customer: Customer
+    shipping: Shipping
+    booking: Booking
     todoList: [ExpoTodoActivity]
   }
 
@@ -244,5 +246,53 @@ export const typeDefinitions = /* GraphQL */ `
     activity: TodoExpoActivityInput
     status: ExpoStatus
     globalProgress: Int
+  }
+
+  # BOOKING
+  type Booking {
+    id: ID!
+    expoId: String
+    consignee: String
+    notify: String
+    shippingCompany: String
+    broker: String
+    transportMode: String
+    cityBondPort: String
+    bondPort: String
+    destinationCountry: String
+    destinationCity: String
+    bookingNumber: String
+    billOfLandingId: String
+    vesselName: String
+    voyage: String
+    eta: DateTime
+    etd: DateTime
+    etaDestination: DateTime
+    documentsDeadline: DateTime
+    inPortDeadline: String
+    rollover: Boolean
+  }
+
+  input CreateBookingInput {
+    expoId: String
+    consignee: String
+    notify: String
+    shippingCompany: String
+    broker: String
+    transportMode: String
+    cityBondPort: String
+    bondPort: String
+    destinationCountry: String
+    destinationCity: String
+    bookingNumber: String
+    billOfLandingId: String
+    vesselName: String
+    voyage: String
+    eta: DateTime
+    etd: DateTime
+    etaDestination: DateTime
+    documentsDeadline: DateTime
+    inPortDeadline: String
+    rollover: Boolean
   }
 `;

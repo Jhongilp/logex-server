@@ -459,6 +459,21 @@ export const resolvers = {
         },
       });
     },
+    createBooking: async (
+      root: any,
+      { input }: any,
+      context: GraphQLContext
+    ): Promise<any> => {
+      // if (!context?.currentUser) {
+      //   return new GraphQLError("Unauthorized user");
+      // }
+      // console.log("[createBooking] input: ", );
+      return context.prisma.booking.create({
+        data: {
+          ...input,
+        },
+      });
+    },
   },
 
   Subscription: {
@@ -523,6 +538,13 @@ export const resolvers = {
           id: expo.shippingId,
         },
       }),
+    booking: (expo: any, args: any, context: GraphQLContext) =>
+      context.prisma.booking.findUnique({
+        where: {
+          expoId: expo.consecutivo,
+        },
+      }),
+
     todoList: (expo: any, args: any, context: GraphQLContext) =>
       context.prisma.expoTodoActivity.findMany({
         where: {
