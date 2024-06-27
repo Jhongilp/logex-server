@@ -32,9 +32,9 @@ export const typeDefinitions = /* GraphQL */ `
     updateDefaultExpoActivity(
       input: UpdateDefaultActivityInput
     ): DefaultExpoActivity
-    # updateTodoExpoActivity(input: UpdateTodoExpoActivityInput): ExpoTodoActivity
     updateTodoExpoActivity(input: UpdateTodoExpoActivityInput): Expo
     createBooking(input: CreateBookingInput): Booking
+    updateBooking(input: UpdateBookingInput): Booking
   }
 
   type Subscription {
@@ -269,7 +269,7 @@ export const typeDefinitions = /* GraphQL */ `
     etd: DateTime
     etaDestination: DateTime
     documentsDeadline: DateTime
-    inPortDeadline: String
+    inPortDeadline: DateTime
     rollover: Boolean
   }
 
@@ -292,7 +292,30 @@ export const typeDefinitions = /* GraphQL */ `
     etd: DateTime
     etaDestination: DateTime
     documentsDeadline: DateTime
-    inPortDeadline: String
+    inPortDeadline: DateTime
+    rollover: Boolean
+  }
+  input UpdateBookingInput {
+    id: ID!
+    expoId: String
+    consignee: String
+    notify: String
+    shippingCompany: String
+    broker: String
+    transportMode: String
+    cityBondPort: String
+    bondPort: String
+    destinationCountry: String
+    destinationCity: String
+    bookingNumber: String
+    billOfLandingId: String
+    vesselName: String
+    voyage: String
+    eta: DateTime
+    etd: DateTime
+    etaDestination: DateTime
+    documentsDeadline: DateTime
+    inPortDeadline: DateTime
     rollover: Boolean
   }
 `;
