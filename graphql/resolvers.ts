@@ -474,6 +474,25 @@ export const resolvers = {
         },
       });
     },
+    updateBooking: async (
+      root: any,
+      { input }: any,
+      context: GraphQLContext
+    ): Promise<any> => {
+      // if (!context?.currentUser) {
+      //   return new GraphQLError("Unauthorized user");
+      // }
+      // console.log("[createBooking] input: ", );
+      return context.prisma.booking.update({
+        where: {
+          id: input.id,
+          expoId: input.expoId,
+        },
+        data: {
+          ...input,
+        },
+      });
+    },
   },
 
   Subscription: {
