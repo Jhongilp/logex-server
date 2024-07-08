@@ -124,7 +124,7 @@ model DefaultExpoActivity {
 }
 
 model Booking {
-  id                 String    @id @default(uuid())
+  id                 String      @id @default(uuid())
   consignee          String
   notify             String
   shippingCompany    String
@@ -144,6 +144,33 @@ model Booking {
   documentsDeadline  DateTime?
   inPortDeadline     DateTime?
   rollover           Boolean?
-  expo               Expo      @relation(fields: [expoId], references: [consecutivo])
-  expoId             String    @unique
+  expo               Expo        @relation(fields: [expoId], references: [consecutivo])
+  expoId             String      @unique
+  containers         Container[]
+}
+
+enum ContainerType {
+  DRY_20
+  DRY_40
+  DRY_40HC
+  REEFER_20
+  REEFER_40
+  REEFER_40HC
+}
+
+model Container {
+  id              String        @id @default(uuid())
+  containerNumber String
+  vehicleId       String
+  transportName   String
+  bookingId       String
+  type            ContainerType
+  dateWithdrawal  DateTime?
+  dateLoad        DateTime?
+  datePortEntry   DateTime?
+  dateSail        DateTime?
+  netWeight       Int?          @default(0)
+  grossWeight     Int?          @default(0)
+  createdAt       DateTime      @default(now())
+  Booking         Booking       @relation(fields: [bookingId], references: [id])
 }

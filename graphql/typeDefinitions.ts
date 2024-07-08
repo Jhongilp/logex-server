@@ -14,6 +14,7 @@ export const typeDefinitions = /* GraphQL */ `
     expos: [Expo]
     expo(id: ID!): Expo
     defaultExpoActivities: [DefaultExpoActivity]
+    containersByBooking(bookingId: ID!): [Container]
   }
 
   type Mutation {
@@ -35,6 +36,7 @@ export const typeDefinitions = /* GraphQL */ `
     updateTodoExpoActivity(input: UpdateTodoExpoActivityInput): Expo
     createBooking(input: CreateBookingInput): Booking
     updateBooking(input: UpdateBookingInput): Booking
+    createContainer(input: CreateContainerInput): Container
   }
 
   type Subscription {
@@ -97,6 +99,7 @@ export const typeDefinitions = /* GraphQL */ `
     shipping: Shipping
     booking: Booking
     todoList: [ExpoTodoActivity]
+    containers: [Container]
   }
 
   enum ExpoStatus {
@@ -114,6 +117,15 @@ export const typeDefinitions = /* GraphQL */ `
     EN_ESPERA
     RETRASADO
     COMPLETADO
+  }
+
+  enum ContainerType {
+    DRY_20
+    DRY_40
+    DRY_40HC
+    REEFER_20
+    REEFER_40
+    REEFER_40HC
   }
 
   type DefaultExpoActivity {
@@ -137,6 +149,22 @@ export const typeDefinitions = /* GraphQL */ `
     completedAt: DateTime
     deadline: DateTime
     expoId: String
+  }
+
+  type Container {
+    id: String
+    containerNumber: String
+    vehicleId: String
+    transportName: String
+    bookingId: String
+    type: ContainerType
+    dateWithdrawal: DateTime
+    dateLoad: DateTime
+    datePortEntry: DateTime
+    dateSail: DateTime
+    netWeight: Int
+    grossWeight: Int
+    createdAt: DateTime
   }
 
   input CreateCompanyInput {
@@ -317,5 +345,20 @@ export const typeDefinitions = /* GraphQL */ `
     documentsDeadline: DateTime
     inPortDeadline: DateTime
     rollover: Boolean
+  }
+
+  # containers
+  input CreateContainerInput {
+    containerNumber: String
+    vehicleId: String
+    transportName: String
+    bookingId: String
+    type: ContainerType
+    dateWithdrawal: DateTime
+    dateLoad: DateTime
+    datePortEntry: DateTime
+    dateSail: DateTime
+    netWeight: Int
+    grossWeight: Int
   }
 `;

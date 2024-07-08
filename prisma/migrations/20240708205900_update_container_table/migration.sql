@@ -1,0 +1,5 @@
+-- AlterTable
+ALTER TABLE "Container" ALTER COLUMN "netWeight" DROP NOT NULL,
+ALTER COLUMN "netWeight" SET DEFAULT 0,
+ALTER COLUMN "grossWeight" DROP NOT NULL,
+ALTER COLUMN "grossWeight" SET DEFAULT 0;

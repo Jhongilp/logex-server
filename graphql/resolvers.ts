@@ -104,6 +104,23 @@ export const resolvers = {
         },
       });
     },
+    containersByBooking: async (
+      parent: any,
+      { bookingId }: any,
+      context: GraphQLContext
+    ) => {
+      // if (!context?.currentUser) {
+      //   return new GraphQLError("Unauthorized user");
+      // }
+      if (!bookingId) {
+        return new GraphQLError("bookingId needs to be provided");
+      }
+      return await context.prisma.container.findMany({
+        where: {
+          bookingId,
+        },
+      });
+    },
   },
 
   Mutation: {
@@ -488,6 +505,22 @@ export const resolvers = {
           id: input.id,
           expoId: input.expoId,
         },
+        data: {
+          ...input,
+        },
+      });
+    },
+    createContainer: async (
+      root: any,
+      { input }: any,
+      context: GraphQLContext
+    ): Promise<any> => {
+      // if (!context?.currentUser) {
+      //   return new GraphQLError("Unauthorized user");
+      // }
+      // console.log("[createBooking] input: ", );
+      console.log("[createContainer] input: ", input);
+      return context.prisma.container.create({
         data: {
           ...input,
         },
