@@ -526,6 +526,25 @@ export const resolvers = {
         },
       });
     },
+    updateContainer: async (
+      root: any,
+      { input }: any,
+      context: GraphQLContext
+    ): Promise<any> => {
+      // if (!context?.currentUser) {
+      //   return new GraphQLError("Unauthorized user");
+      // }
+      // console.log("[createBooking] input: ", );
+      return context.prisma.container.update({
+        where: {
+          id: input.id,
+          bookingId: input.bookingId,
+        },
+        data: {
+          ...input,
+        },
+      });
+    },
   },
 
   Subscription: {

@@ -37,6 +37,7 @@ export const typeDefinitions = /* GraphQL */ `
     createBooking(input: CreateBookingInput): Booking
     updateBooking(input: UpdateBookingInput): Booking
     createContainer(input: CreateContainerInput): Container
+    updateContainer(input: UpdateContainerInput): Container
   }
 
   type Subscription {
@@ -349,6 +350,21 @@ export const typeDefinitions = /* GraphQL */ `
 
   # containers
   input CreateContainerInput {
+    containerNumber: String
+    vehicleId: String
+    transportName: String
+    bookingId: String
+    type: ContainerType
+    dateWithdrawal: DateTime
+    dateLoad: DateTime
+    datePortEntry: DateTime
+    dateSail: DateTime
+    netWeight: Int
+    grossWeight: Int
+  }
+
+  input UpdateContainerInput {
+    id: ID!
     containerNumber: String
     vehicleId: String
     transportName: String
