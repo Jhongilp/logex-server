@@ -230,7 +230,7 @@ export const typeDefinitions = /* GraphQL */ `
   }
   input CreateExpoInput {
     consecutivo: String
-    status: Int
+    # status: ExpoStatus
     globalProgress: Int
     shippingId: String
     customerId: String
