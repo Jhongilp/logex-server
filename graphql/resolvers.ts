@@ -616,11 +616,13 @@ export const resolvers = {
         },
       }),
 
-    todoList: (expo: any, args: any, context: GraphQLContext) =>
-      context.prisma.expoTodoActivity.findMany({
+    todoList: async (expo: any, args: any, context: GraphQLContext) => {
+      const results = await context.prisma.expoTodoActivity.findMany({
         where: {
-          expoId: expo.id,
+          expoId: expo.consecutivo,
         },
-      }),
+      });
+      return results;
+    },
   },
 };
