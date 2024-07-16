@@ -73,11 +73,20 @@ export const resolvers = {
       // if (!context?.currentUser) {
       //   return new GraphQLError("Unauthorized user");
       // }
-      return context.prisma.expo.findMany({
+      const results = await context.prisma.expo.findMany({
         where: {
           company_nit: context.currentUser?.company_id,
         },
+        // include: {
+        //   booking: {
+        //     include: {
+        //       containers: true,
+        //     }
+        //   }
+        // }
       });
+      // console.log("[get expos] results: ", results);
+      return results;
     },
     expo: async (_root: any, { id }: any, context: GraphQLContext) => {
       // if (!context?.currentUser) {
@@ -623,6 +632,25 @@ export const resolvers = {
         },
       });
       return results;
+    },
+    containers: async (expo: any, args: any, context: GraphQLContext) => {
+      // console.log("[containers] expo: ", expo);
+      const results = await context.prisma.booking.findMany({
+        where: {
+          expoId: expo.consecutivo,
+        },
+        include: {
+          containers: true,
+        },
+      });
+      console.log("[expo resolver] results: ", results);
+      const containers: any[] = [];
+      results.forEach((booking) => {
+        booking.containers.forEach((container) => {
+          containers.push(container);
+        });
+      });
+      return containers;
     },
   },
 };
