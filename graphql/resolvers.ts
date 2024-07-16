@@ -1,6 +1,6 @@
 import { DateTimeResolver } from "graphql-scalars";
 import { GraphQLError } from "graphql";
-import { GraphQLContext } from "../src/index";
+import { GraphQLContext } from "../index";
 import { initialExpoSettingList } from "../src/app_constants";
 
 export const resolvers = {

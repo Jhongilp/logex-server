@@ -1,10 +1,10 @@
 import { createServer } from "node:http";
 import { createYoga } from "graphql-yoga";
-import { schema } from "./schema";
+import { schema } from "./src/schema";
 import { PrismaClient, User } from "@prisma/client";
-import { prisma } from "./db";
-import { authenticateUser } from "./auth";
-import { pubSub } from './pubsub'
+import { prisma } from "./src/db";
+import { authenticateUser } from "./src/auth";
+import { pubSub } from './src/pubsub'
  
 
 export type GraphQLContext = {
